@@ -2,11 +2,13 @@
 import networkx as nx 
 import ndlib.models.ModelConfig as mc
 import ndlib.models.epidemics.ThresholdModel as th
-from ndlib.viz.mpl.DiffusionTrend import DiffusionTrend
+#from ndlib.viz.mpl.DiffusionTrend import DiffusionTrend
+#from ndlib.viz.mpl.DiffusionPrevalence import DiffusionPrevalence
+
 
 # Network topology
 
-g = nx.gnm_random_graph(1000, 0.1)
+g = nx.gnm_random_graph(200, 1000)
 
 # Model selection
 model = th.ThresholdModel(g)
@@ -23,9 +25,11 @@ for i in g.nodes():
 model.set_initial_status(config)
 
 # Simulation execution
-iterations = model.iteration_bunch(200)
+iterations = model.iteration_bunch(10)
 trends = model.build_trends(iterations)
 
 # Visualization
-viz = DiffusionTrend(model, trends)
-viz.plot("diffusion.pdf")
+"""viz = DiffusionTrend(model, trends)
+viz.plot('diffusion.pdf')
+viz = DiffusionPrevalence(model, trends)
+viz.plot("prevalence.pdf")"""
