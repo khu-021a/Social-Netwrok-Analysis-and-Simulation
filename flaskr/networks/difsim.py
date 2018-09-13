@@ -5,7 +5,7 @@ import ndlib.models.epidemics.ThresholdModel as th
 #from ndlib.viz.mpl.DiffusionTrend import DiffusionTrend
 #from ndlib.viz.mpl.DiffusionPrevalence import DiffusionPrevalence
 
-
+"""
 # Network topology
 
 g = nx.gnm_random_graph(200, 1000)
@@ -28,8 +28,40 @@ model.set_initial_status(config)
 iterations = model.iteration_bunch(10)
 trends = model.build_trends(iterations)
 
+"""
+
 # Visualization
-"""viz = DiffusionTrend(model, trends)
+"""
+viz = DiffusionTrend(model, trends)
 viz.plot('diffusion.pdf')
 viz = DiffusionPrevalence(model, trends)
 viz.plot("prevalence.pdf")"""
+
+
+
+def difsim(n, m, modelpara, nodethre, ite):
+    
+    g = nx.gnm_random_graph(n, m)
+    model = th.ThresholdModel(g)
+    config = mc.Configuration()
+    config.add_model_parameter('percentage_infected', modelpara)
+    
+    if isinstance(nodethre,dict):
+        config.add_node_set_configuration("threshold", nodethre)
+    elif isinstance(nodethre,(int,float)):
+        if 0<nodethre<1:
+
+            for i in g.nodes():
+                config.add_node_configuration("threshold", i, nodethre)
+        else: 
+            raise ValueError()
+    else:
+        raise TypeError()
+
+    model.set_initial_status(config)
+    # Simulation execution
+    return model.iteration_bunch(ite)
+
+print(difsim(10,15,0.1,0.34,2))
+    
+
