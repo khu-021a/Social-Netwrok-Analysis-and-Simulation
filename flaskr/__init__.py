@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask import send_from_directory
+from flask import request
 
 def create_app(test_config=None):
     # create and configure the app
@@ -28,5 +29,12 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return send_from_directory('templates', 'base.html')
-
+    
+    @app.route('/simulator1', methods=['POST'])
+    def simulator():
+        if request.method == 'POST':
+            print(request)
+            return 'Great'
+        
     return app
+

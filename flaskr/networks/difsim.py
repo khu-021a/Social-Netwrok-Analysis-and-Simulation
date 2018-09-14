@@ -60,8 +60,18 @@ def difsim(n, m, modelpara, nodethre, ite):
 
     model.set_initial_status(config)
     # Simulation execution
-    return model.iteration_bunch(ite)
+    data=[]
+    difsimdata = model.iteration_bunch(ite)
+    for i in difsimdata:
+        ite = i['iteration']
+        sus = i['node_count'][0]
+        inf = i['node_count'][1]
+        
+        data.append({'iteration':ite, 'sus':sus, 'inf':inf})
+    return data
 
-print(difsim(10,15,0.1,0.34,2))
-    
+
+
+data1 = difsim(10,15,0.1,0.34,3)
+print(data1)    
 

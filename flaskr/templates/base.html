@@ -130,10 +130,13 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="/static/libs/jquery-3.3.1.slim.min.js" ></script>
+        <script src="/static/libs/jquery-3.3.1.min.js" ></script>
         <script src="/static/libs/popper.min.js"></script>
         <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
         <script src="/static/libs/mapbox-gl/mapbox-gl.js"></script>
+        <script src="/static/libs/f2.js"></script>
+       
+        
     
     
         <script>
@@ -144,6 +147,72 @@
               center:[-74.50,40],
               zoom:9
               });
+
+  
+              $(document).ready(function(){
+              $.ajax({
+              url: "/simulator1",
+              type:'POST',
+              data: {key1: 234}
+              }).done(function(res) {
+              console.log(res);
+              });    
+              });
+
+            //可视化Antv F2
+              $.getJSON('/assets/data/f2/linear-pan.json', function(data) {
+              var chart = new F2.Chart({
+                id: 'mountNode',
+                pixelRatio: window.devicePixelRatio
+              });
+              chart.source(data, {
+                release: {
+                  min: 1990,
+                  max: 2010
+                }
+              });
+              chart.tooltip({
+                showCrosshairs: true,
+                showItemMarker: false,
+                background: {
+                  radius: 2,
+                  fill: '#1890FF',
+                  padding: [3, 5]
+                },
+                nameStyle: {
+                  fill: '#fff'
+                },
+                onShow: function onShow(ev) {
+                  var items = ev.items;
+                  items[0].name = items[0].title;
+                }
+              });
+              chart.line().position('release*count');
+              chart.point().position('release*count').style({
+                lineWidth: 1,
+                stroke: '#fff'
+              });
+
+              chart.interaction('pan');
+              // 定义进度条
+              chart.scrollBar({
+                mode: 'x',
+                xStyle: {
+                  offsetY: -5
+                }
+              });
+
+              // 绘制 tag
+              chart.guide().tag({
+                position: [1969, 1344],
+                withPoint: false,
+                content: '1,344',
+                limitInPlot: true,
+                offsetX: 5,
+                direct: 'cr'
+              });
+              chart.render();
+            });  
           </script>
 </body>
 </html>
