@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link src="../flaskr/static/libs/chartist/chartist.min.css" rel="stylesheet">
+    <script src="../flaskr/static/libs/chartist/chartist.min.js"></script>
+    
+    
+    <title>Title</title>
+</head>
+<body>
+<button>Update the Chart!</button>
+<div class="ct-chart ct-perfect-fourth"></div>
+
+<script type="text/javascript">
+    /*var chart;
+    var getData = $.get('/data');
+    // done 相当于 success 方法
+    getData.done(function (results) {
+        var data = {
+            // A labels array that can contain any sort of values
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                results.results
+            ]
+        };
+
+        // As options we currently only set a static size of 300x200 px. We can also omit this and use aspect ratio containers
+        // as you saw in the previous example
+        var options = {
+            width: 800,
+            height: 600
+        };
+
+// Create a new line chart object where as first parameter we pass in a selector
+        // that is resolving to our chart container element. The Second parameter
+        // is the actual data object. As a third parameter we pass in our custom options.
+        chart = new Chartist.Line('.ct-chart', data, options);
+    });
+
+    function updateChart() {
+        var updateData = $.get('/data');
+        updateData.done(function (results) {
+            var data = {
+                // A labels array that can contain any sort of values
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                // Our series array that contains series objects or in this case series data arrays
+                series: [
+                    results.results
+                ]
+            };
+            // update data
+            chart.update(data);
+        });
+    }
+
+    $('button').on('click', updateChart);*/
+
+    var data = {
+    // A labels array that can contain any sort of values
+    labels: ['0', '1', '2', '3', '4'],
+    // Our series array that contains series objects or in this case series data arrays
+    series: [
+         [5, 2],
+         [4, 2],
+         [4, 6],
+         [9, 0],
+         [6, 7]
+             ]
+    };
+    
+   new Chartist.Line('.ct-chart', data)
+
+
+
+</script>
+</body>
+</html>
+
