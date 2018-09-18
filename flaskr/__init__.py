@@ -33,7 +33,7 @@ def create_app(test_config=None):
     @app.route('/simulator1', methods=['POST'])
     def simulator():
         if request.method == 'POST':
-            print(request.data)
+            print(dict(request.form))
             return 'Great'
         
     return app
