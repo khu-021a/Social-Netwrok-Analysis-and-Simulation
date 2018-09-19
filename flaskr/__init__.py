@@ -1,13 +1,14 @@
 
-#! python3
 
 import os
 import json
 from flask import Flask
 from flask import send_from_directory
 from flask import request
+import importlib
+import networkx as nx 
+import difsim 
 
-#from networks.difsim import difsim 
 
 def create_app(test_config=None):
     # create and configure the app
@@ -39,14 +40,17 @@ def create_app(test_config=None):
     def simulator():
         if request.method == 'POST':
             data = json.loads(json.dumps(request.form))
+            print(data)
+            print(type(data['nodes']))
+            print(type(int(data['nodes'])))
             nodes = int(data['nodes'])
             edges = int(data['edges'])
             infected = float(data['infected'])
             threshold = float(data['threshold'])
             iteration = int(data['iteration'])
-            #s1 = difsim(nodes, edges, infected, threshold, iteration)
-            #print(s1)
-            #return s1
+            s1 = difsim.difsim(nodes, edges, infected, threshold, iteration)
+            print(s1)
+            return json.dumps(s1)
             
     return app
 

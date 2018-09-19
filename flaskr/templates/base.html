@@ -227,9 +227,10 @@
                 $.ajax({
                 url: "/simulator1",
                 type:'POST',
-                data: {"nodes":nodes,"edges":edges,"infected":infected,"threshold":threshold,"itertion":iteration}
+                data: {"nodes":nodes,"edges":edges,"infected":infected,"threshold":threshold,"iteration":iteration}
                 }).done(function(res) {
                 //chartist
+                console.log(res)
                 })
               });
           </script>

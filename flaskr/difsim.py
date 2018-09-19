@@ -1,4 +1,5 @@
-#! python3
+
+import importlib
 import networkx as nx 
 import ndlib.models.ModelConfig as mc
 import ndlib.models.epidemics.ThresholdModel as th
