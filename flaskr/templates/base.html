@@ -11,6 +11,7 @@
         <link href="/static/css/dashboard.css" rel="stylesheet">
         <link href="/static/libs/fontawesome/css/all.min.css" rel="stylesheet">
         <link href="/static/libs/mapbox-gl/mapbox-gl.css" rel="stylesheet" />
+        <link href="/static/libs/chartist/chartist.min.css" rel="stylesheet">
         
     </head>
 <body>
@@ -119,8 +120,8 @@
                   
                 </div>
               </div> -->
-              <div class="my-4 w-100" id="map" style="width: 900px; height: 380px;"></div>
-            
+              <div class="my-4 w-100" id="map" style="width: 900px; height: 380px;"></div> 
+              <div class="ct-chart ct-perfect-fourth" ></div>
 
 
             <!-- Modal -->
@@ -172,7 +173,7 @@
         <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
         <script src="/static/libs/mapbox-gl/mapbox-gl.js"></script>
         <script src="/static/libs/f2.js"></script>
-       
+        <script src="/static/libs/chartist/chartist.min.js"></script>
         
     
     
@@ -230,6 +231,11 @@
                 data: {"nodes":nodes,"edges":edges,"infected":infected,"threshold":threshold,"iteration":iteration}
                 }).done(function(res) {
                 //chartist
+                var obj = JSON.parse(res)
+                
+                
+                new Chartist.Line('.ct-chart', obj);
+                    
                 console.log(res)
                 })
               });

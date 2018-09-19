@@ -61,15 +61,17 @@ def difsim(n, m, modelpara, nodethre, ite):
 
     model.set_initial_status(config)
     # Simulation execution
-    data=[]
+   
     difsimdata = model.iteration_bunch(ite)
+    labels=[]
+    sus=[]
+    inf=[]
     for i in difsimdata:
-        ite = i['iteration']
-        sus = i['node_count'][0]
-        inf = i['node_count'][1]
+        labels.append(i['iteration'])
+        sus.append(i['node_count'][0])
+        inf.append(i['node_count'][1])
         
-        data.append({'iteration':ite, 'sus':sus, 'inf':inf})
-    return data
+    return {"labels":labels, "series":[sus, inf]}
 
    
 
