@@ -201,27 +201,28 @@
               });
               
               $( "#run" ).click(function() {
-                var nodes=$('#nodes').val();
+                var nodes=parseInt($('#nodes').val());
                 if(nodes<=0) {
                   nodes=Math.random()*10;
                 }
-                var edges=$('#edges').val();
+                var edges=parseInt($('#edges').val());
                 if(nodes<0) {
                   edges=Math.random()*10;
                 }
-                var infected=$('#infected').val();
+                var infected=parseFloat($('#infected').val());
                 if(infected<0 || infected>1){
                   infected=Math.random();
                 }
-                var threshold=$('#threshold').val();
+                var threshold=parseFloat($('#threshold').val());
                 if(threshold<0 || threshold>1){
                   threshold=Math.random();
                 }
-                var iteration=$('#iteration').val();
-                console.log(typeof iteration);
+                var iteration=parseInt($('#iteration').val());
                 if(iteration<0){
                   iteration=Math.abs(iteration);
                 }
+              
+              
 
                 $.ajax({
                 url: "/simulator1",

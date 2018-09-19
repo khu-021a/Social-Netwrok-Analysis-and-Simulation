@@ -1,4 +1,4 @@
-
+#! python3
 import networkx as nx 
 import ndlib.models.ModelConfig as mc
 import ndlib.models.epidemics.ThresholdModel as th
@@ -70,8 +70,5 @@ def difsim(n, m, modelpara, nodethre, ite):
         data.append({'iteration':ite, 'sus':sus, 'inf':inf})
     return data
 
-
-
-data1 = difsim(10,15,0.1,0.34,3)
-print(data1)    
+   
 
