@@ -29,9 +29,9 @@ def seeds(net, number, alg):
     
 
 
-g1= graph.sp.GenPrefAttach( 100,3 )
+#g1= graph.sp.GenPrefAttach( 100,3 )
 
-print(seeds(g1, 3, "DegreeCentr"))
+#print(seeds(g1, 3, "DegreeCentr"))
 
 # print([node.GetId() for node in g1.Nodes()])
 
