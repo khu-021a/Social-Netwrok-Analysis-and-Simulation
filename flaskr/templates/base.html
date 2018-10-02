@@ -10,16 +10,43 @@
         <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
         <link href="/static/css/dashboard.css" rel="stylesheet">
         <link href="/static/libs/fontawesome/css/all.min.css" rel="stylesheet">
-        <link href="/static/libs/mapbox-gl/mapbox-gl.css" rel="stylesheet" />
+        
         <link href="/static/libs/chartist/chartist.min.css" rel="stylesheet">
         
+        
+        <meta charset="utf-8">
+        <title></title>
+        <style>
+          #container {
+            width: 100vw;
+            height: 100vh;
+          }
+
+          #container > svg {
+            width: 100%;
+            height: 100%;
+          }
+
+          .node-normal {
+            fill: #84BD00;
+            stroke: #2c282c;
+            stroke-width: 1.5px;
+          }
+
+          .link-normal {
+            stroke: #848587;
+            stroke-width: 1px;
+            stroke-opacity: .75;
+          }
+        </style>
+
     </head>
 <body>
     <body>
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">#Project name#</a>
         </nav>
-    
+       
         <div class="container-fluid">
           <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -58,30 +85,31 @@
                   </a>
                 </h6>
                 <ul class="nav flex-column mb-2">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
+                  <li class="nav-item" >
+                    <a class="nav-link" href="#" id="SWG">
                       <span data-feather="file-text"></span>
-                      Network1
+                      Small World
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
                       <span data-feather="file-text"></span>
-                      Network2
+                      PrefAttach
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
                       <span data-feather="file-text"></span>
-                      Network3
+                      Random
                     </a>
                   </li>
-                  <li class="nav-item">
+
+                  <!--<li class="nav-item">
                     <a class="nav-link" href="#">
                       <span data-feather="file-text"></span>
                       Network4
                     </a>
-                  </li>
+                  </li> -->
                 </ul>
 
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -120,9 +148,9 @@
                   
                 </div>
               </div> -->
-              <div class="my-4 w-100" id="map" style="width: 900px; height: 380px;"></div> 
+              <div id="container"></div> 
               <div class="ct-chart ct-perfect-fourth" ></div>
-
+  
 
             <!-- Modal -->
             <div class="modal fade" id="Dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -159,8 +187,42 @@
                 </div>
               </div>
             </div>
-              
-             
+            <!-- modal End-->
+            
+            <!-- Dialog for Small World -->
+            <div class="modal fade" id="SWGDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Small World Graph Generator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col"><label for="nodes">Nodes</label></div>
+                      <div class="col"><input type="number" id="nodes" name="nodes" min="1"></div>
+                      <div class="w-100"></div>
+                      <div class="col"><label for="edges">Out Degree</label></div>
+                      <div class="col"><input type="number" id="outdegree" name="edges" min="0"></div>
+                      <div class="w-100"></div>
+                      <div class="col"><label for="rewirepb">Rewire Probability</label></div>
+                      <div class="col"><input type="number" id="rewirepb" name="infected" min="0" max="1" step="1e-5" vaule="0.1"></div>
+                      <div class="w-100"></div>
+        
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="SWGrun">Run</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <!-- Dialog for Small World -->
+
+
             </main>
           </div>
         </div>
@@ -171,20 +233,93 @@
         <script src="/static/libs/jquery-3.3.1.min.js" ></script>
         <script src="/static/libs/popper.min.js"></script>
         <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/static/libs/mapbox-gl/mapbox-gl.js"></script>
+        
         <script src="/static/libs/f2.js"></script>
         <script src="/static/libs/chartist/chartist.min.js"></script>
+        <script src="/static/libs/d3.min.js"></script>
         
     
     
         <script>
-              mapboxgl.accessToken = 'pk.eyJ1IjoiaGs4MTEiLCJhIjoiY2lqYWd2Nmt4MDA5cXV4bHhpbXJ6b3Z2MSJ9.wm_sOHkCaL0qKtxqYSnVwg';
-              var map = new mapboxgl.Map({
-              container: 'map',
-              style: 'mapbox://styles/mapbox/streets-v9',
-              center:[-74.50,40],
-              zoom:9
-              });
+              let forceGraph = (options) => {
+                  let anchor = options['anchor']
+                  let nodeRadius = options['nodeRadius']
+
+                  let svg = d3.select(anchor).append('svg')
+                  let shapes = svg.append('g')
+                  let zoom = (zoomView, minExtent, maxExtent) => d3.zoom().scaleExtent([minExtent, maxExtent]).on('zoom', () => zoomView.attr('transform', d3.event.transform))
+                  svg.call(zoom(shapes, .25, 8))
+
+                  let w = svg.node().parentNode.clientWidth
+                  let h = svg.node().parentNode.clientHeight
+
+                  let simulation = d3.forceSimulation()
+                    .force('charge', d3.forceManyBody())
+                    .force('center', d3.forceCenter(w / 2, h / 2))
+                    .force('collide', d3.forceCollide(25))
+                  let draggable = d3.drag()
+                    .on('start', datum => {
+                      if (!d3.event.active) simulation.alphaTarget(.3).restart()
+                      datum.fx = datum.x
+                      datum.fy = datum.y
+                    })
+                    .on('drag', datum => {
+                      datum.fx = d3.event.x
+                      datum.fy = d3.event.y
+                    })
+                    .on('end', datum => {
+                      if (!d3.event.active) simulation.alphaTarget(0)
+                      datum.fx = null
+                      datum.fy = null
+                    })
+
+                  let bindLinks = (dataset, anchor) => {
+                    let slots = anchor.selectAll('line').data(dataset)
+                    slots.exit().remove()
+                    let gLinks = slots.enter().append('line')
+                      .merge(slots).attr('id', datum => 'l' + datum['id'])
+                      .classed('link-normal', true)
+                    return gLinks
+                  }
+                  
+                  let bindNodes = (dataset, anchor) => {
+                    let slots = anchor.selectAll('g').data(dataset)
+                    slots.exit().remove()
+                    let gNodes = slots.enter().append('g')
+                    gNodes.append('circle').attr('r', nodeRadius).classed('node-normal', true)
+                    gNodes = gNodes.merge(slots).attr('id', datum => datum.id).call(draggable)
+                    return gNodes
+                  }
+
+                  let linkAnchor = shapes.append('g').classed('links', true)
+
+                  let nodeAnchor = shapes.append('g').classed('nodes', true)
+
+                  let importData = (nodeArr, linkArr) => {
+
+                    let nodes = bindNodes(nodeArr, nodeAnchor)
+                    let links = bindLinks(linkArr, linkAnchor)
+                    
+                    let ticked = () => {
+                      links.attr('x1', (datum) => datum['source'].x)
+                      .attr('y1', (datum) => datum['source'].y)
+                      .attr('x2', (datum) => datum['target'].x)
+                      .attr('y2', (datum) => datum['target'].y)
+
+                      nodes.attr('transform', datum => `translate(${datum.x}, ${datum.y})`)
+                    }
+
+                    simulation.nodes(nodeArr).on('tick', ticked)
+                    simulation.force('link', d3.forceLink(linkArr).id(datum => datum['id']))
+                    simulation.alphaTarget(.3).restart()
+                  }
+                  return importData
+                }
+
+              let fg = forceGraph({
+                  anchor: '#container',
+                  nodeRadius: 10
+                })
 
   
               $(document).ready(function(){
@@ -201,6 +336,34 @@
                 $('#Dialog').modal('show');
               });
               
+              $( "#SWG" ).click(function() {
+                $('#SWGDialog').modal('show');
+              });
+              
+              $( "#SWGrun" ).click(function() {
+                var nodes=parseInt($('#nodes').val());
+                if(nodes<=0) {
+                  nodes=Math.random()*10; }
+                var outdegree=parseInt($('#outdegree').val());
+                if(outdegree<0) {
+                  outdegree=Math.random()*10; }
+                var rewirepb=parseFloat($('#rewirepb').val());
+                if(rewirepb<0) {
+                  rewirepb=Math.random(); }
+                
+                $.ajax({
+                url: "/smallworld",
+                type:'POST',
+                data: {"nodes":nodes,"outdegree":outdegree,"rewirepb":rewirepb}
+                }).done(function(res) {
+                //chartist
+                var obj = JSON.parse(res)
+                fg(obj['nodes'], obj['links']);
+                    
+                console.log(res)
+                })
+              });
+
               $( "#run" ).click(function() {
                 var nodes=parseInt($('#nodes').val());
                 if(nodes<=0) {
@@ -222,13 +385,25 @@
                 if(iteration<0){
                   iteration=Math.abs(iteration);
                 }
-              
+
+                $.ajax({
+                url: "/smallworld",
+                type:'POST',
+                data: {"nodes":nodes,"outdegree":outdegree,"infected":infected,"threshold":threshold,"iteration":iteration}
+                }).done(function(res) {
+                //chartist
+                var obj = JSON.parse(res)
+  
+                new Chartist.Line('.ct-chart', obj);
+                    
+                console.log(res)
+                })
               
 
                 $.ajax({
                 url: "/simulator1",
                 type:'POST',
-                data: {"nodes":nodes,"edges":edges,"infected":infected,"threshold":threshold,"iteration":iteration}
+                data: {"nodes":nodes,"edges":edges,"rewirepb":rewirepb}
                 }).done(function(res) {
                 //chartist
                 var obj = JSON.parse(res)
@@ -239,6 +414,87 @@
                 console.log(res)
                 })
               });
+
+              let graph = {
+                  "nodes": [
+                    { "id": "n0", "name": "兽面纹" },
+                    { "id": "n1", "name": "兽面纹玉琮" },
+                    { "id": "n2", "name": "玉琮" },
+                    { "id": "n3", "name": "湖北随州曾侯乙墓" }, 
+                    { "id": "n4", "name": "卧兽云纹玉璧" }, 
+                    { "id": "n5", "name": "玉石器" },
+                    { "id": "n6", "name": "玉璧" }, 
+                    { "id": "n7", "name": "战国早期" },
+                    { "id": "n8", "name": "当阳李家凹子M13" }, 
+                    { "id": "n9", "name": "湖北宜昌博物馆" }, 
+                    { "id": "n10", "name": "云纹" } ,
+                    { "id": "n11", "name": "湖北" } ,
+                    { "id": "n12", "name": "楚文化" }, 
+                    { "id": "n13", "name": "战国中期" },
+                    { "id": "n14", "name": "江陵望山M2" },
+                    { "id": "n15", "name": "湖北省博物馆" }, 
+                    { "id": "n16", "name": "云纹大玉璧" }, 
+                    { "id": "n17", "name": "《初论江陵望山楚墓的年代与墓主》" }
+                  ],
+                  "links": [
+                    { "id": "0", "source": "n0", "target": "n1", "relation":"纹饰" }, 
+                    { "id": "1", "source": "n1", "target": "n2", "relation": "器类" },
+                    { "id": "2", "source": "n1", "target": "n3", "relation": "出土墓葬" }, 
+                    { "id": "3", "source": "n1", "target": "n15", "relation": "收藏" },
+                    { "id": "4", "source": "n1", "target": "n7", "relation": "年代" }, 
+                    { "id": "5", "source": "n2", "target": "n5", "relation": "关系" },
+                    { "id": "6", "source": "n5", "target": "n6", "relation": "属于" }, 
+                    { "id": "7", "source": "n10", "target": "n16", "relation": "纹饰" },
+                    { "id": "8", "source": "n3", "target": "n11", "relation": "位于" }, 
+                    { "id": "9", "source": "n4", "target": "n6", "relation": "器类" },
+                    { "id": "10", "source": "n4", "target": "n7", "relation": "年代" }, 
+                    { "id": "11", "source": "n4", "target": "n10", "relation": "纹饰" },
+                    { "id": "12", "source": "n4", "target": "n8", "relation": "出土墓葬" }, 
+                    { "id": "13", "source": "n4", "target": "n9", "relation": "收藏" },
+                    { "id": "14", "source": "n8", "target": "n11", "relation": "位于" }, 
+                    { "id": "15", "source": "n4", "target": "n12", "relation": "代表文化" },
+                    { "id": "16", "source": "n12", "target": "n16", "relation": "代表文化" }, 
+                    { "id": "17", "source": "n6", "target": "n16", "relation": "器类" },
+                    { "id": "18", "source": "n12", "target": "n1", "relation": "代表文化" }, 
+                    { "id": "19", "source": "n9", "target": "n11", "relation": "位于" },
+                    { "id": "20", "source": "n11", "target": "n14", "relation": "位于" }, 
+                    { "id": "21", "source": "n13", "target": "n16", "relation": "年代" }, 
+                    { "id": "22", "source": "n14", "target": "n16", "relation": "出土墓葬" }, 
+                    { "id": "23", "source": "n14", "target": "n17", "relation": "文献" }, 
+                    { "id": "24", "source": "n15", "target": "n11", "relation": "位于" }, 
+                    { "id": "25", "source": "n16", "target": "n15", "relation": "收藏" }
+                  ]
+                }
+
+                let graph_x = {
+                  "nodes": [
+                    { "id": "n0", "name": "兽面纹" },
+                    { "id": "n1", "name": "兽面纹玉琮" },
+                    { "id": "n2", "name": "玉琮" },
+                    { "id": "n3", "name": "湖北随州曾侯乙墓" }, 
+                    { "id": "n4", "name": "卧兽云纹玉璧" }, 
+                    { "id": "n5", "name": "玉石器" },
+                    { "id": "n6", "name": "玉璧" }, 
+                    { "id": "n7", "name": "战国早期" },
+                    { "id": "n8", "name": "当阳李家凹子M13" }, 
+                    { "id": "n9", "name": "湖北宜昌博物馆" }, 
+                    { "id": "n10", "name": "云纹" } ,
+                    { "id": "n11", "name": "湖北" } ,
+                    { "id": "n12", "name": "楚文化" }, 
+                    { "id": "n13", "name": "战国中期" },
+                    { "id": "n14", "name": "江陵望山M2" },
+                    { "id": "n15", "name": "湖北省博物馆" }, 
+                    { "id": "n16", "name": "云纹大玉璧" }, 
+                    { "id": "n17", "name": "《初论江陵望山楚墓的年代与墓主》" }
+                  ],
+                  "links": [{ "id": "0", "source": "n0", "target": "n1", "relation":"纹饰" }]
+                }
+
+                
+
+                
+                fg(graph['nodes'], graph['links'])
+	
           </script>
 </body>
 </html>
