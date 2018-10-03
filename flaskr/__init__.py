@@ -9,6 +9,7 @@ import importlib
 import networkx as nx 
 import difsim 
 import graph
+import datatransfer
 
 
 def create_app(test_config=None):
@@ -40,7 +41,10 @@ def create_app(test_config=None):
     @app.route('/smallworld', methods=['POST'])
     def smallworld():
         if request.method == 'POST':
-            data = json.loads(json.dumps(request.form))
+            raw_data = request.form
+            print(raw_data)
+            print(json.dumps(raw_data))
+            data = json.loads(json.dumps(raw_data))
             print(data)
             print(type(data['nodes']))
             nodes = int(data['nodes'])
@@ -48,8 +52,9 @@ def create_app(test_config=None):
             rewirepb = float(data['rewirepb'])
             
             s1 = graph.samllworld_gnm(nodes, outdegree, rewirepb)
-            print(s1)
-            return json.dumps(s1)
+            #datatransfer.datatransfer(s1)
+            #print(s1)
+            return json.dumps(datatransfer.datatransfer(s1))
     
     @app.route('/simulator1', methods=['POST'])
     def simulator():

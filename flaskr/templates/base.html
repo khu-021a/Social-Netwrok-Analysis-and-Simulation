@@ -165,7 +165,7 @@
                   <div class="modal-body">
                     <div class="row">
                       <div class="col"><label for="nodes">Nodes</label></div>
-                      <div class="col"><input type="number" id="nodes" name="nodes" min="1"></div>
+                      <div class="col"><input type="number" id="node" name="nodes" min="1"></div>
                       <div class="w-100"></div>
                       <div class="col"><label for="edges">Edges</label></div>
                       <div class="col"><input type="number" id="edges" name="edges" min="0"></div>
@@ -322,7 +322,7 @@
                 })
 
   
-              $(document).ready(function(){
+              /*$(document).ready(function(){
               $.ajax({
               url: "/simulator1",
               type:'POST',
@@ -330,7 +330,7 @@
               }).done(function(res) {
               console.log(res);
               });    
-              });
+              });*/
               
               $( "#t" ).click(function() {
                 $('#Dialog').modal('show');
@@ -341,7 +341,9 @@
               });
               
               $( "#SWGrun" ).click(function() {
+                console.log($('#nodes').val())
                 var nodes=parseInt($('#nodes').val());
+                console.log(nodes)
                 if(nodes<=0) {
                   nodes=Math.random()*10; }
                 var outdegree=parseInt($('#outdegree').val());
@@ -364,7 +366,7 @@
                 })
               });
 
-              $( "#run" ).click(function() {
+              /*$( "#run" ).click(function() {
                 var nodes=parseInt($('#nodes').val());
                 if(nodes<=0) {
                   nodes=Math.random()*10;
@@ -413,87 +415,10 @@
                     
                 console.log(res)
                 })
-              });
+              });*/
 
-              let graph = {
-                  "nodes": [
-                    { "id": "n0", "name": "兽面纹" },
-                    { "id": "n1", "name": "兽面纹玉琮" },
-                    { "id": "n2", "name": "玉琮" },
-                    { "id": "n3", "name": "湖北随州曾侯乙墓" }, 
-                    { "id": "n4", "name": "卧兽云纹玉璧" }, 
-                    { "id": "n5", "name": "玉石器" },
-                    { "id": "n6", "name": "玉璧" }, 
-                    { "id": "n7", "name": "战国早期" },
-                    { "id": "n8", "name": "当阳李家凹子M13" }, 
-                    { "id": "n9", "name": "湖北宜昌博物馆" }, 
-                    { "id": "n10", "name": "云纹" } ,
-                    { "id": "n11", "name": "湖北" } ,
-                    { "id": "n12", "name": "楚文化" }, 
-                    { "id": "n13", "name": "战国中期" },
-                    { "id": "n14", "name": "江陵望山M2" },
-                    { "id": "n15", "name": "湖北省博物馆" }, 
-                    { "id": "n16", "name": "云纹大玉璧" }, 
-                    { "id": "n17", "name": "《初论江陵望山楚墓的年代与墓主》" }
-                  ],
-                  "links": [
-                    { "id": "0", "source": "n0", "target": "n1", "relation":"纹饰" }, 
-                    { "id": "1", "source": "n1", "target": "n2", "relation": "器类" },
-                    { "id": "2", "source": "n1", "target": "n3", "relation": "出土墓葬" }, 
-                    { "id": "3", "source": "n1", "target": "n15", "relation": "收藏" },
-                    { "id": "4", "source": "n1", "target": "n7", "relation": "年代" }, 
-                    { "id": "5", "source": "n2", "target": "n5", "relation": "关系" },
-                    { "id": "6", "source": "n5", "target": "n6", "relation": "属于" }, 
-                    { "id": "7", "source": "n10", "target": "n16", "relation": "纹饰" },
-                    { "id": "8", "source": "n3", "target": "n11", "relation": "位于" }, 
-                    { "id": "9", "source": "n4", "target": "n6", "relation": "器类" },
-                    { "id": "10", "source": "n4", "target": "n7", "relation": "年代" }, 
-                    { "id": "11", "source": "n4", "target": "n10", "relation": "纹饰" },
-                    { "id": "12", "source": "n4", "target": "n8", "relation": "出土墓葬" }, 
-                    { "id": "13", "source": "n4", "target": "n9", "relation": "收藏" },
-                    { "id": "14", "source": "n8", "target": "n11", "relation": "位于" }, 
-                    { "id": "15", "source": "n4", "target": "n12", "relation": "代表文化" },
-                    { "id": "16", "source": "n12", "target": "n16", "relation": "代表文化" }, 
-                    { "id": "17", "source": "n6", "target": "n16", "relation": "器类" },
-                    { "id": "18", "source": "n12", "target": "n1", "relation": "代表文化" }, 
-                    { "id": "19", "source": "n9", "target": "n11", "relation": "位于" },
-                    { "id": "20", "source": "n11", "target": "n14", "relation": "位于" }, 
-                    { "id": "21", "source": "n13", "target": "n16", "relation": "年代" }, 
-                    { "id": "22", "source": "n14", "target": "n16", "relation": "出土墓葬" }, 
-                    { "id": "23", "source": "n14", "target": "n17", "relation": "文献" }, 
-                    { "id": "24", "source": "n15", "target": "n11", "relation": "位于" }, 
-                    { "id": "25", "source": "n16", "target": "n15", "relation": "收藏" }
-                  ]
-                }
+              
 
-                let graph_x = {
-                  "nodes": [
-                    { "id": "n0", "name": "兽面纹" },
-                    { "id": "n1", "name": "兽面纹玉琮" },
-                    { "id": "n2", "name": "玉琮" },
-                    { "id": "n3", "name": "湖北随州曾侯乙墓" }, 
-                    { "id": "n4", "name": "卧兽云纹玉璧" }, 
-                    { "id": "n5", "name": "玉石器" },
-                    { "id": "n6", "name": "玉璧" }, 
-                    { "id": "n7", "name": "战国早期" },
-                    { "id": "n8", "name": "当阳李家凹子M13" }, 
-                    { "id": "n9", "name": "湖北宜昌博物馆" }, 
-                    { "id": "n10", "name": "云纹" } ,
-                    { "id": "n11", "name": "湖北" } ,
-                    { "id": "n12", "name": "楚文化" }, 
-                    { "id": "n13", "name": "战国中期" },
-                    { "id": "n14", "name": "江陵望山M2" },
-                    { "id": "n15", "name": "湖北省博物馆" }, 
-                    { "id": "n16", "name": "云纹大玉璧" }, 
-                    { "id": "n17", "name": "《初论江陵望山楚墓的年代与墓主》" }
-                  ],
-                  "links": [{ "id": "0", "source": "n0", "target": "n1", "relation":"纹饰" }]
-                }
-
-                
-
-                
-                fg(graph['nodes'], graph['links'])
 	
           </script>
 </body>
