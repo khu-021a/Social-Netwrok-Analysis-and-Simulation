@@ -10,6 +10,7 @@ import networkx as nx
 import difsim 
 import graph
 import datatransfer
+import snap
 
 
 def create_app(test_config=None):
@@ -54,6 +55,32 @@ def create_app(test_config=None):
             s1 = graph.samllworld_gnm(nodes, outdegree, rewirepb)
             #datatransfer.datatransfer(s1)
             #print(s1)
+            return json.dumps(datatransfer.datatransfer(s1))
+    
+    @app.route('/PrefAttach', methods=['POST'])
+    def prefattach():
+        if request.method == 'POST':
+            raw_data = request.form
+            print(raw_data)
+            data = json.loads(json.dumps(raw_data))
+            nodes = int(data['nodes'])
+            outdegree = int(data['outdegree'])
+            
+            s1 = graph.prefattach_gnm(nodes, outdegree)
+            #datatransfer.datatransfer(s1)
+            return json.dumps(datatransfer.datatransfer(s1))
+
+    @app.route('/Random', methods=['POST'])
+    def rand():
+        if request.method == 'POST':
+            raw_data = request.form
+            print(raw_data)
+            data = json.loads(json.dumps(raw_data))
+            nodes = int(data['nodes'])
+            edges = int(data['edges'])
+            
+            s1 = graph.rnd_gnm(snap.PNGraph,nodes, edges)
+            #datatransfer.datatransfer(s1)
             return json.dumps(datatransfer.datatransfer(s1))
     
     @app.route('/simulator1', methods=['POST'])
