@@ -119,20 +119,20 @@
                     </a>
                   </h6>
                   <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                      <a class="nav-link" href="#" id="t">
+                    <li class="nav-item" >
+                      <a class="nav-link" href="#" id="UserLevel">
                         <span data-feather="file-text"></span>
-                        Threshold Model
+                        User Level
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">
+                      <a class="nav-link" href="#" id="CityLevel">
                         <span data-feather="file-text"></span>
-                        Simulation2
+                        City Level
                       </a>
                     </li>
-                    
-                  </ul>
+                    </div>
+                  </div>
               </div>
             </nav>
     
@@ -152,7 +152,7 @@
               <div class="ct-chart ct-perfect-fourth" ></div>
   
 
-            <!-- Modal -->
+            <!-- Threshold Modal Dialog -->
             <div class="modal fade" id="Dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -187,7 +187,7 @@
                 </div>
               </div>
             </div>
-            <!-- modal End-->
+            <!-- Threshold Modal Dialog-->
             
             <!-- Dialog for Small World -->
             <div class="modal fade" id="SWGDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -280,6 +280,43 @@
             </div>
              <!-- Dialog for Random -->
 
+            <!-- Dialog for User Level -->
+            <div class="modal fade" id="UserDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">User Level Simulator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col"><label for="seednodes">Seed Nodes</label></div>
+                      <div class="col"><input type="number" id="seednodes" name="nodes" min="1"></div>
+                      <div class="w-100"></div>
+                      <div class="col"><label for="algorithm">Algorithm</label></div>
+                      <div class="col"><select id="algorithm">
+                        <option value="degree">Degree Centrality</option>
+                        <option value="between">Betweenness Centrality</option>
+                        <option value="close">Closeness Centrality</option>
+                        <option value="elgenvetor">Elgenvetor Centrality</option>
+                        <option value="random">Random Centrality</option>
+                      </select></div>
+                    </div>
+                      <!--
+                      <div class="col"><input type="number" id="algorithm" name="edges" min="0"></div>
+                      <div class="w-100"></div>-->
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="seedsrun">Run</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <!-- Dialog for User Level -->
             </main>
           </div>
         </div>
@@ -429,7 +466,7 @@
               }); 
 
               $( "#Prefrun" ).click(function() {
-                var nodes=parseInt($('#Pre_nodes').val());
+                var nodes=parseInt($('#seednodes').val());
                 console.log(nodes)
                 if(nodes<=0) {
                   nodes=Math.random()*10; }
@@ -467,6 +504,30 @@
                 url: "/Random",
                 type:'POST',
                 data: {"nodes":nodes,"edges":edges}
+                }).done(function(res) {
+                //chartist
+                var obj = JSON.parse(res)
+                fg(obj['nodes'], obj['links']);
+                    
+                console.log(res)
+                })
+              });
+
+              $( "#UserLevel" ).click(function() {
+                $('#UserDialog').modal('show');
+              }); 
+
+              $( "#seedsrun" ).click(function() {
+                var seednodes=parseInt($('#seednodes').val());
+                console.log(nodes)
+                if(nodes<=0) {
+                  seednodes=Math.random()*10; }
+                var algorithm=parse($('#algorithm').val());
+                
+                $.ajax({
+                url: "/seednodes",
+                type:'POST',
+                data: {"seednodes":seednodes,"algorithm":algorithm}
                 }).done(function(res) {
                 //chartist
                 var obj = JSON.parse(res)

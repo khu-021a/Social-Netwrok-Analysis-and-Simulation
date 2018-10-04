@@ -11,7 +11,7 @@ import difsim
 import graph
 import datatransfer
 import snap
-
+import seeds
 
 def create_app(test_config=None):
     # create and configure the app
@@ -83,22 +83,19 @@ def create_app(test_config=None):
             #datatransfer.datatransfer(s1)
             return json.dumps(datatransfer.datatransfer(s1))
     
-    @app.route('/simulator1', methods=['POST'])
-    def simulator():
+    @app.route('/seednodes', methods=['POST'])
+    def seednodes():
         if request.method == 'POST':
-            data = json.loads(json.dumps(request.form))
-            print(data)
-            print(type(data['nodes']))
-            print(type(int(data['nodes'])))
-            nodes = int(data['nodes'])
-            edges = int(data['edges'])
-            infected = float(data['infected'])
-            threshold = float(data['threshold'])
-            iteration = int(data['iteration'])
-            s1 = difsim.difsim(nodes, edges, infected, threshold, iteration)
-            print(s1)
-            return json.dumps(s1)
+            raw_data = request.form
+            print(raw_data)
+            data = json.loads(json.dumps(raw_data))
+            seednodes = int(data['seednodes'])
+            algorithm = data['algorithm']
             
+            s1 = graph.rnd_gnm(snap.PNGraph,100, 30)
+            seeds.seeds(s1,seednodes,algorithm)
+            #datatransfer.datatransfer(s1)
+            return json.dumps(datatransfer.datatransfer(s1))
         
     return app
 
