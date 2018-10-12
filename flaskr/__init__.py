@@ -83,19 +83,21 @@ def create_app(test_config=None):
             #datatransfer.datatransfer(s1)
             return json.dumps(datatransfer.datatransfer(s1))
     
-    @app.route('/seednodes', methods=['POST'])
+    @app.route('/seednodes', methods=['PUT'])
     def seednodes():
-        if request.method == 'POST':
+        if request.method == 'PUT':
             raw_data = request.form
             print(raw_data)
             data = json.loads(json.dumps(raw_data))
             seednodes = int(data['seednodes'])
             algorithm = data['algorithm']
             
-            s1 = graph.rnd_gnm(snap.PNGraph,100, 30)
-            seeds.seeds(s1,seednodes,algorithm)
-            #datatransfer.datatransfer(s1)
-            return json.dumps(datatransfer.datatransfer(s1))
+            s1 = graph.samllworld_gnm(100, 5, .15)
+            seed_nodes = seeds.seeds(s1,seednodes,algorithm)
+            #--datatransfer.datatransfer(s1,seed_nodes)
+            results = datatransfer.datatransfer(s1,seed_nodes,[1, 2])
+            print(results)
+            return json.dumps(results)
         
     return app
 

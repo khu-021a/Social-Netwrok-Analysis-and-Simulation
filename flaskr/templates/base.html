@@ -8,7 +8,6 @@
         <!-- Bootstrap CSS and JS-->
         <title>Social Network Analysis and Simulation</title>
         <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
-        <link href="/static/css/dashboard.css" rel="stylesheet">
         <link href="/static/libs/fontawesome/css/all.min.css" rel="stylesheet">
         
         <link href="/static/libs/chartist/chartist.min.css" rel="stylesheet">
@@ -17,12 +16,21 @@
         <meta charset="utf-8">
         <title></title>
         <style>
-          #container {
-            width: 100vw;
+          #sidebar, #results{
+            /*height: calc(100%-56px);*/
+            /*align-self: stretch;*/
+          }
+
+          #main {
             height: 100vh;
           }
 
-          #container > svg {
+          #netgraph {
+            width: 100%;
+            height: 100%;
+          }
+
+          #netgraph > svg {
             width: 100%;
             height: 100%;
           }
@@ -31,6 +39,17 @@
             fill: #84BD00;
             stroke: #2c282c;
             stroke-width: 1.5px;
+          }
+
+          .node-seed {
+            fill: #f55;
+            stroke: #2c282c;
+            stroke-width: 1.5px;
+          }
+
+          .opinion {
+            stroke: turquoise;
+            stroke-width: 3px;
           }
 
           .link-normal {
@@ -48,214 +67,259 @@
             -moz-appearance: checkbox;    /* Firefox */
             -ms-appearance: checkbox;     /* not currently supported */
           }
+        .graphbox{
+          width:100% ;
+          height: 400px;
+        }
+
+        .box{
+          display:flex;
+          flex-direction:column;
+          align-items:stretch;
+          width: 100vw;
+          height: 100vh;
+        }
+
+        .box1{
+
+        }
+        .box2{
+          display:flex;
+          align-items:stretch;
+          height: 100%;
+        }
         
+        .box21 {
+          width: 35vw;
+        }
+        .box22 {
+          width: 65vw;
+        }
+
+        /*#matter1 {
+          display: grid;
+          grid-template-columns: 2fr 3fr;
+          grid-gap: 5px 5px;
+          align-items: center;
+          justify-content: center;
+        }*/
         
         </style>
 
     </head>
 <body>
 
-    <div class="row">
-        <div class="col">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                  <ul class="navbar-nav">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">File <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Analysis</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Network
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="#" id="SWG">Small World</a>
-                          <a class="dropdown-item" href="#" id="Pre">PreAttach</a>
-                          <a class="dropdown-item" href="#" id="rnd">Random</a>                                               
-                      </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Community
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">CNM</a>
-                        </div>
-                      </li>
-                      <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Simulator
-                          </a>
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+<div class="box">
+  <div class="box1">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+                <a class="navbar-brand" href="#">AAAAA</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                          <li class="nav-item active">
+                            <a class="nav-link" href="#">File <span class="sr-only">(current)</span></a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Analysis</a>
+                          </li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Network
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="#" id="SWG">Small World</a>
+                              <a class="dropdown-item" href="#" id="Pre">PreAttach</a>
+                              <a class="dropdown-item" href="#" id="rnd">Random</a>                                               
+                            </div>
+                          </li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Community
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="#">CNM</a>
+                            </div>
+                          </li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Simulator
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                               <a class="dropdown-item" href="#" id="">City Level</a>
                               <a class="dropdown-item" href="#" id="userlevel">User Level</a>
-                          </div>
-                        </li>
-                  </ul>
-                </div>
-              </nav>  
-
-        </div>
-        <div class="w-100"></div>
-        
-        <div class="col" id="sidebar">
-        <div id="matter1" class="hide">  
-                <h5 class="modal-title" id="exampleModalLabel">Small World Graph Generator</h5>                       
-                      <div class="container">
-                        <div class="row">
-                          <div class="col"><label for="nodes">Nodes</label></div>
-                          <div class="col"><input type="number" id="nodes" name="nodes" min="1"></div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="edges">Out Degree</label></div>
-                          <div class="col"><input type="number" id="outdegree" name="edges" min="0"></div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="rewirepb">Rewire Probability</label></div>
-                          <div class="col"><input type="number" id="rewirepb" name="infected" min="0" max="1" step="1e-5" vaule="0.1"></div>
-                          <div class="w-100"></div>
-            
-                        </div>
-                      </div>
-                      
-                        <button type="button" class="btn btn-primary" id="SWGrun">Run</button>
-                      
-                    </div>
-                
-        <div id="matter2" class="hide">     
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">PreAttach Graph Generator</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col"><label for="nodes">Nodes</label></div>
-                      <div class="col"><input type="number" id="Pre_nodes" name="nodes" min="1"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="edges">Out Degree</label></div>
-                      <div class="col"><input type="number" id="Pre_outdegree" name="edges" min="0"></div>
-                      <div class="w-100"></div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="Prefrun">Run</button>
-                  </div>
-                </div>
-              </div>
-            </div>       
-            
-        <div id="matter3" class="hide">         
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Random Graph Generator</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col"><label for="nodes">Nodes</label></div>
-                      <div class="col"><input type="number" id="random_nodes" name="nodes" min="1"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="edges">Edges</label></div>
-                      <div class="col"><input type="number" id="random_edges" name="edges" min="0"></div>
-                      <div class="w-100"></div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="randomrun">Run</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-        <div id="matter4" class="hide">         
-                      <h5 class="modal-title" id="exampleModalLabel">Seeds Nodes</h5>
-                      <div class="container">
-                        <div class="row">
-                          <div class="col"><label for="seeds_nodes">Seeds Nodes</label></div>
-                          <div class="col"><input type="number" id="seeds_nodes" name="nodes" min="1"></div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="algorithm">Algorithm</label></div>
-                          <div class="col">
-                          <select>
-                              <option value="Degree Centrality">Degree Centrality</option>
-                              <option value="Between">Between Centrality</option>
-                              <option value="Closeness">Closeness Centrality</option>
-                              <option value="Eigenvect">Eigenvect Centrality</option>
-                              <option value="Random">Random Centrality</option>
-                            </select>
-                          </div>
-                        </div></div>
-                        <div class="container">
-                            <div class="row">
-                      <div class="col">
-                        <button type="button" class="btn btn-primary" id="randomrun">Generator Seeds Nodes</button>
-                      </div>
-                      <div class="w-100"></div>
-                      <h5 class="modal-title" >Opinoion Leaders</h5>
-                      <div class="w-100"></div>
-                      <div class="col">
-                      <input type="radio" name="gender" value="whole network" checked> Whole Network<br>
-                      <div class="w-100"></div>
-                      <input type="radio" name="gender" value="eachcommunity"> Each Community<br>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col"><label for="proportion">Propotion</label></div>
-                        <div class="col"><input type="number" id="proportion" name="nodes" min="0" max="1" step="1e-5"></div>
-                        </div></div>
-                        <div class="container" id="models">
-                            <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary" id="Genopin">Generator Opinion Leaders</button>
-                          </div>
-                          <div class="w-100"></div>
-                          <div class="col"><input type="radio" name="model" class="model1" value="LTM" checked> Linear Threshold Model</div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="icmopin">Threshold </label></div>
-                          <div class="col"><input type="number" id="ltmthre" class="model1" name="opinpro" min="0" max="1" step="1e-5"></div>
-                          <div class="w-100"></div>
-                          <div class="col"><input type="radio" name="model" class="model2" value="ICM"> Independent Cascade Model</div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="icmopin">Propagate Probability(Opinion Leader) </label></div>
-                          <div class="col"><input type="number" id="probabilityopin" class="model2" name="opinpro" min="0" max="1" step="1e-5" disabled></div>
-                          <div class="w-100"></div>
-                          <div class="col"><label for="icmnor">Propagate Probability(Noraml) </label></div>
-                          <div class="col"><input type="number" id="probabilitynormal" class="model2"name="pronor" min="0" max="1" step="1e-5" disabled></div>
-                          <div class="w-100"></div>
-                          <div class="col">
-                              <button type="button" class="btn btn-primary" id="infordif">Information Difussion</button>
                             </div>
-                        </div>
-                      </div>
-                    </div>
-               
-          </div> 
-            
-
-            
-
-
-      <div class="col" id="results"  >
-          <div id="netgraph" ></div> 
-
-      </div>
-
-
-      </div>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+    </div>  
+   
+      <div class="box2"> 
+        <div class="box21">
+                  <div id="matter1" class="hide">  
+                    <h5 class="modal-title" id="exampleModalLabel">Small World Graph Generator</h5>                       
+                    <div class="container">
+                    <div class="row">
+                        <div ><label for="nodes">Nodes</label></div>
+                        <div ><input type="number" id="nodes" name="nodes" min="1"></div>
+                        <div class="w-100"></div>
+                        <div ><label for="edges">Out Degree</label></div>
+                        <div ><input type="number" id="outdegree" name="edges" min="0"></div>
+                        <div class="w-100"></div>
+                        <div ><label for="rewirepb">Rewire Probability</label></div>
+                        <div ><input type="number" id="rewirepb" name="infected" min="0" max="1" step="1e-5" vaule="0.1"></div>
+                        <div class="w-100"></div>
     
+                        </div>
+                        </div>
+    
+                        <button type="button"  id="SWGrun">Run</button>
+                    <!--
+                    <div class="col"><label for="nodes">Nodes</label></div>
+                    <div class="col"><input type="number" id="nodes" name="nodes" min="1"></div>
+                    <div class="w-100"></div>
+                    <div class="col"><label for="edges">Out Degree</label></div>
+                    <div class="col"><input type="number" id="outdegree" name="edges" min="0"></div>
+                    <div class="w-100"></div>
+                    <div class="col"><label for="rewirepb">Rewire Probability</label></div>
+                    <div class="col"><input type="number" id="rewirepb" name="infected" min="0" max="1" step="1e-5" vaule="0.1"></div>
+                    <div class="w-100"></div>
+
+                    </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" id="SWGrun">Run</button>-->
+   
+                  </div>
+
+                  <div id="matter2" class="hide">     
+                  <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">PreAttach Graph Generator</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                  <div class="row">
+                  <div class="col"><label for="nodes">Nodes</label></div>
+                  <div class="col"><input type="number" id="Pre_nodes" name="nodes" min="1"></div>
+                  <div class="w-100"></div>
+                  <div class="col"><label for="edges">Out Degree</label></div>
+                  <div class="col"><input type="number" id="Pre_outdegree" name="edges" min="0"></div>
+                  <div class="w-100"></div>
+                  </div>
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" id="Prefrun">Run</button>
+                  </div>
+                  </div>
+                  </div>
+                  </div>       
+
+                  <div id="matter3" class="hide">         
+                  <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Random Graph Generator</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                  <div class="row">
+                  <div class="col"><label for="nodes">Nodes</label></div>
+                  <div class="col"><input type="number" id="random_nodes" name="nodes" min="1"></div>
+                  <div class="w-100"></div>
+                  <div class="col"><label for="edges">Edges</label></div>
+                  <div class="col"><input type="number" id="random_edges" name="edges" min="0"></div>
+                  <div class="w-100"></div>
+                  </div>
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" id="randomrun">Run</button>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+
+                  <div id="matter4" class="hide">         
+                <h5 class="modal-title" id="exampleModalLabel">Seeds Nodes</h5>
+                <div class="container">
+                <div class="row">
+                <div class="col"><label for="seeds_nodes">Seeds Nodes</label></div>
+                <div class="col"><input type="number" id="seeds_nodes" name="nodes" min="1"></div>
+                <div class="w-100"></div>
+                <div class="col"><label for="algorithm" >Algorithm</label></div>
+                <div class="col">
+                <select id="seeds_algorithm">
+                <option value="Degree Centrality">Degree Centrality</option>
+                <option value="Between">Between Centrality</option>
+                <option value="Closeness">Closeness Centrality</option>
+                <option value="Eigenvect">Eigenvect Centrality</option>
+                <option value="Random">Random Centrality</option>
+                </select>
+                </div>
+                </div></div>
+                <div class="container">
+                <div class="row">
+                <div class="col">
+                <button type="button" class="btn btn-primary" id="seedsgraph">Generator Seeds Nodes</button>
+                </div>
+                <div class="w-100"></div>
+                <h5 class="modal-title" >Opinoion Leaders</h5>
+                <div class="w-100"></div>
+                <div class="col">
+                <input type="radio" name="gender" value="whole network" checked> Whole Network<br>
+                <div class="w-100"></div>
+                <input type="radio" name="gender" value="eachcommunity"> Each Community<br>
+                </div>
+                <div class="w-100"></div>
+                <div class="col"><label for="proportion">Propotion</label></div>
+                <div class="col"><input type="number" id="proportion" name="nodes" min="0" max="1" step="1e-5"></div>
+                </div></div>
+                <div class="container" id="models">
+                <div class="row">
+                <div class="col">
+                <button type="button" class="btn btn-primary" id="Genopin">Generator Opinion Leaders</button>
+                </div>
+                <div class="w-100"></div>
+                <div class="col"><input type="radio" name="model" class="model1" value="LTM" checked> Linear Threshold Model</div>
+                <div class="w-100"></div>
+                <div class="col"><label for="icmopin">Threshold </label></div>
+                <div class="col"><input type="number" id="ltmthre" class="model1" name="opinpro" min="0" max="1" step="1e-5"></div>
+                <div class="w-100"></div>
+                <div class="col"><input type="radio" name="model" class="model2" value="ICM"> Independent Cascade Model</div>
+                <div class="w-100"></div>
+                <div class="col"><label for="icmopin">Propagate Probability(Opinion Leader) </label></div>
+                <div class="col"><input type="number" id="probabilityopin" class="model2" name="opinpro" min="0" max="1" step="1e-5" disabled></div>
+                <div class="w-100"></div>
+                <div class="col"><label for="icmnor">Propagate Probability(Noraml) </label></div>
+                <div class="col"><input type="number" id="probabilitynormal" class="model2"name="pronor" min="0" max="1" step="1e-5" disabled></div>
+                <div class="w-100"></div>
+                <div class="col">
+                <button type="button" class="btn btn-primary" id="infordif">Information Difussion</button>
+                </div>
+                </div>
+                </div>
+                </div>
+
+                  </div>
+          <div class="box22">
+                  <div id="netgraph" ></div>
+            </div> 
+          </div> 
+      </div>
+  
+  
       <script src="/static/libs/jquery-3.3.1.min.js" ></script>
       <script src="/static/libs/popper.min.js"></script>
       <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-      
-      <script src="/static/libs/f2.js"></script>
       <script src="/static/libs/chartist/chartist.min.js"></script>
       <script src="/static/libs/d3.min.js"></script>
 
@@ -270,8 +334,8 @@
             }
           
           var targetID = mapping[functionID]
-          console.log($("#sidebar").children())
-          $("#sidebar").children().not('[class~="hide"]').addClass("hide")
+          console.log($(".box21").children())
+          $(".box21").children().not('[class~="hide"]').addClass("hide")
           if ($("#"+targetID).hasClass("hide")){
             $("#"+targetID).removeClass("hide")
           }
@@ -292,7 +356,7 @@
               let simulation = d3.forceSimulation()
                 .force('charge', d3.forceManyBody())
                 .force('center', d3.forceCenter(w / 2, h / 2))
-                .force('collide', d3.forceCollide(25))
+                .force('collide', d3.forceCollide(1))
               let draggable = d3.drag()
                 .on('start', datum => {
                   if (!d3.event.active) simulation.alphaTarget(.3).restart()
@@ -322,7 +386,7 @@
                 let slots = anchor.selectAll('g').data(dataset)
                 slots.exit().remove()
                 let gNodes = slots.enter().append('g')
-                gNodes.append('circle').attr('r', nodeRadius).classed('node-normal', true)
+                gNodes.append('circle').attr('r', nodeRadius).classed('node-normal', d => !d['seed']).classed('node-seed', d => d['seed']).classed('opinion', d => d['opinion_leader'])
                 gNodes = gNodes.merge(slots).attr('id', datum => datum.id).call(draggable)
                 return gNodes
               }
@@ -354,7 +418,7 @@
 
           let fg = forceGraph({
               anchor: '#netgraph',
-              nodeRadius: 10
+              nodeRadius: 5
             });
 
           
@@ -433,9 +497,10 @@
             }).done(function(res) {
             //chartist
             var obj = JSON.parse(res)
+            console.log(obj)
             fg(obj['nodes'], obj['links']);
                 
-            console.log(res)
+            
             })
           });
 
@@ -465,26 +530,27 @@
             })
           });
 
-          $( "#UserLevel" ).click(function() {
-            $('#UserDialog').modal('show');
-          }); 
-
-          $( "#seedsrun" ).click(function() {
-            var seednodes=parseInt($('#seednodes').val());
-            console.log(nodes)
-            if(nodes<=0) {
+          $( "#seedsgraph" ).click(function() {
+            var seednodes=parseInt($('#seeds_nodes').val());
+            console.log(seednodes)
+            if(seednodes<=0) {
               seednodes=Math.random()*10; }
-            var algorithm=parse($('#algorithm').val());
+            var algorithm=($('#seeds_algorithm').val());
             
             $.ajax({
             url: "/seednodes",
-            type:'POST',
+            type:'PUT',
+            cache: false,
             data: {"seednodes":seednodes,"algorithm":algorithm}
             }).done(function(res) {
             //chartist
             var obj = JSON.parse(res)
-            fg(obj['nodes'], obj['links']);
-                
+            $('#netgraph').empty()
+            let fg = forceGraph({
+              anchor: '#netgraph',
+              nodeRadius: 5
+            });
+            fg(obj['nodes'], obj['links']);   
             console.log(res)
             })
           });
