@@ -37,15 +37,14 @@ def cascade(net, seednodes, pbopinion, pbnormal, opinleader, pbopinleader):
         seednodes = list(new_seeds)
         print(seednodes)
     print(hist_seeds)
+    return hist_seeds
 
 
 
 
         
-    
-g1= graph.rnd_gnm(sp.PUNGraph,20,60)
-    #seednodes=[1,3]
-cascade(g1, [1,12,5,9], 0.4, 0.3, "Each Network", 0.2 )
-           
-        #pbnode = random.uniform(0,1)
+if __name__ == '__main__':
+    g1= graph.rnd_gnm(sp.PUNGraph,20,60)
+    print(cascade(g1, [1,12,5,9], 0.4, 0.3, "Each Network", 0.2 ))
+
        

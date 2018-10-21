@@ -12,6 +12,9 @@ import graph
 import datatransfer
 import snap
 import seeds
+import community
+import linearthreshold
+import cascade
 
 def create_app(test_config=None):
     # create and configure the app
@@ -97,6 +100,51 @@ def create_app(test_config=None):
             #--datatransfer.datatransfer(s1,seed_nodes)
             results = datatransfer.datatransfer(s1,seed_nodes,[1, 2])
             print(results)
+            return json.dumps(results)
+
+    @app.route('/comm', methods=['PUT'])
+    def comm():
+        if request.method == 'PUT':
+            raw_data = request.form
+            print(raw_data)
+            data = json.loads(json.dumps(raw_data))
+            opin = float(data['pro_opinion'])
+            search_type = data['search_type']
+            s1 = graph.samllworld_gnm(100, 5, .15)
+            if search_type=="eachcommunity":
+                results = datatransfer.datatransfer(s1,[],community.find_opinionleaders(community.communityCNM(s1),opin))
+            else:
+                results = datatransfer.datatransfer(s1,[],seeds.rnd(100,int(100*opin)))
+            
+            print(results)
+            return json.dumps(results)
+
+    @app.route('/diff', methods=['PUT'])
+    def diff():
+        if request.method == 'PUT':
+            raw_data = request.form
+            print(raw_data)
+            data = json.loads(json.dumps(raw_data))
+            s1 = graph.samllworld_gnm(100, 5, .15)
+            model_type = data['model_type']
+            if model_type == 'LTM':
+                seednodes = int(data['seednodes'])
+                algorithm = data['algorithm']
+                thre = float(data['threshold'])  
+                seed_nodes = seeds.seeds(s1,seednodes,algorithm)
+                results = datatransfer.datatransfer(s1,linearthreshold.linear(s1,seed_nodes,thre),[])
+            elif model_type == 'ICM':
+                seednodes = int(data['seednodes'])
+                algorithm = data['algorithm']
+                pbopinion = float(data['pbopinion'])
+                pbnormal = float(data['pbnormal'])
+                opinleader = data['opinleader']
+                pbopinleader = float(data['pbobinleader']) 
+                seed_nodes = seeds.seeds(s1,seednodes,algorithm)
+            #cascade.cascade(s1,seednodes,pbopinion,pbnormal,opinleader,pbopinleader)
+                results = datatransfer.datatransfer(s1,cascade.cascade(s1,seed_nodes,pbopinion,pbnormal,opinleader,pbopinleader),community.find_opinionleaders(community.communityCNM(s1),pbopinleader))
+            #--datatransfer.datatransfer(s1,seed_nodes)
+            
             return json.dumps(results)
         
     return app
