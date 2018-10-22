@@ -98,7 +98,7 @@ def create_app(test_config=None):
             s1 = graph.samllworld_gnm(100, 5, .15)
             seed_nodes = seeds.seeds(s1,seednodes,algorithm)
             #--datatransfer.datatransfer(s1,seed_nodes)
-            results = datatransfer.datatransfer(s1,seed_nodes,[1, 2])
+            results = datatransfer.datatransfer(s1,seed_nodes,[])
             print(results)
             return json.dumps(results)
 
