@@ -1,6 +1,7 @@
 
 
 import os
+import re
 import json
 from flask import Flask
 from flask import send_from_directory
@@ -15,10 +16,18 @@ import seeds
 import community
 import linearthreshold
 import cascade
+import geo
 
 def create_app(test_config=None):
     # create and configure the app
+
+    UPLOAD_FOLDER = './city-diffusion/'
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.mkdir(UPLOAD_FOLDER)
+    ALLOWED_EXTENSIONS = set(['txt', 'xml', 'json', 'dbf', 'shp', 'prj', 'shx', 'sbn', 'sbx'])
+
     app = Flask(__name__, instance_relative_config=True)
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -36,6 +45,10 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    
+    def allowed_file(filename):
+        return '.' in filename and \
+        filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
     # Index Page
     @app.route('/')
@@ -146,6 +159,54 @@ def create_app(test_config=None):
             #--datatransfer.datatransfer(s1,seed_nodes)
             
             return json.dumps(results)
+
+    @app.route('/MapFileInput', methods=['POST'])
+    def MapFileInput():
+        if request.method == 'POST':
+            raw_data = request.files
+            files = dict(raw_data)
+            print(files)
+            for f in files.values():
+                name = f[0].filename
+                content = f[0].read()
+                if re.search('(.)+.shp$', name): 
+                    shapefile_name = name
+                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
+                local_f.write(content)
+                local_f.close()
+            geojson = geo.shp2geojson(os.path.join(UPLOAD_FOLDER, shapefile_name))
+            return geojson
+
+    @app.route('/LoadNetFile', methods=['POST'])
+    def LoadNetFile():
+        if request.method == 'POST':
+            raw_data = request.files
+            files = dict(raw_data)
+            print(files)
+            for f in files.values():
+                name = f[0].filename
+                content = f[0].read()
+                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
+                local_f.write(content)
+                local_f.close()
+
+            return "ok"
+
+    @app.route('/LoadWeight', methods=['POST'])
+    def LoadWeight ():
+        if request.method == 'POST':
+            raw_data = request.files
+            files = dict(raw_data)
+            print(files)
+            for f in files.values():
+                name = f[0].filename
+                content = f[0].read()
+                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
+                local_f.write(content)
+                local_f.close()
+
+            return "ok"           
+       
         
     return app
 
