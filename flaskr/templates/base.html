@@ -103,6 +103,21 @@
           align-items: center;
           justify-content: center;
         }*/
+
+        .polygon path {
+          fill: lightblue;
+          stroke: black;
+        }
+
+        .line path {
+          fill: transparent;
+          stroke: green;
+        }
+
+        .point path {
+          fill: lightgreen;
+          stroke: lightgreen;
+        }
         
         </style>
 
@@ -270,7 +285,7 @@
                 </div>
                 </div>
                 </div>
-                </div>
+                  </div>
 
                <div id="matter5" class="hide"> 
                   <h5 class="modal-title" id="city">Network</h5>
@@ -333,17 +348,15 @@
                                <button type="button" class="btn btn-primary"  id="" name="clear">Difusson</button>
                               </div>   
 
-                         </div> 
-                        </div>
+               </div> 
+          </div>
  
-                  </div>
             <div class="box22">
                   <div id="netgraph" ></div>
             </div> 
-          </div>
       </div>
+  </div>
      
-
   
       <script src="/static/libs/jquery-3.3.1.min.js" ></script>
       <script src="/static/libs/popper.min.js"></script>
@@ -369,6 +382,50 @@
             $("#"+targetID).removeClass("hide")
           }
           }
+
+        	var createLayers = function(anchor, layers, options) {
+        		var w = options['width'];
+        		var h = options['height'];
+        		layers.reverse();
+        		var projection = d3.geoAlbersUsa();
+            var paths = d3.geoPath().projection(projection);
+            var slot = d3.select(anchor);
+            slot.selectAll('.geo-svg').remove();
+        		var svg = slot.append('svg').classed('geo-svg', true).attr('width', w).attr('height', h);
+            layers.forEach(function(layer) {
+        			var features = layer.features;
+        			var featureType = features[0]['geometry']['type'];
+        			var className = null;
+        			switch (featureType) {
+        				case 'Point': 
+        					className = 'point';
+        					break;
+        				case 'MultiPoint': 
+        					className = 'multi-point';
+        					break;
+        				case 'LineString': 
+        					className = 'line';
+        					break;
+        				case 'MultiLineString': 
+        					className = 'multi-line';
+        					break;
+        				case 'Polygon': 
+        					className = 'polygon';
+        					break;
+        				case 'MultiPolygon': 
+        					className = 'multi-polygon';
+        					break;
+        				default: 
+        					className = 'other';
+        					break;
+        			}
+        			var map = svg.append('g').classed(className, true).selectAll('path').data(features);
+		            map.enter().append('path').attr('d', paths);
+		            map.exit().remove();
+        		});
+        	};
+
+
 
           let forceGraph = (options) => {
               let anchor = options['anchor']
@@ -654,6 +711,9 @@
           });
           
           var files;
+          var layers = [];
+          var baseFlag = false;
+          var netFlag = false;
           $('#MapFile').on('change', function(event) {
             files = event.target.files;
           });
@@ -681,9 +741,20 @@
                             console.log("Wrong");
                         }
                     }
-                    console.log(data);
+
                     console.log("Success");
-                    //window.location.reload();
+                    dataJSON = JSON.parse(data)
+                    if (baseFlag) {
+                      layers.pop();
+                      baseFlag = false;
+                    }
+                    layers.push(dataJSON)
+                    baseFlag = true;
+                    createLayers('#netgraph', layers, {
+                      width: 960,
+                      height: 600
+                    })
+                    
                 },
                 error: function (a,b,c) {
                   
@@ -695,7 +766,7 @@
           $('#NetworkIn').on('change', function(event) {
             files = event.target.files;
           });  
-
+          
           $("#LoadNetFile").click(function () {
               //$("#MapFile").click();
               var data = new FormData();
@@ -719,6 +790,22 @@
                             console.log("Wrong");
                         }
                     }
+                    dataJSON = JSON.parse(data)
+                    lineFeatures = dataJSON['line']
+                    console.log(lineFeatures['features'].length)
+                    pointFeatures = dataJSON['point']
+                    if (netFlag) {
+                      layers.shift();
+                      layers.shift();
+                      netFlag = false;
+                    }
+                    layers.unshift(lineFeatures);
+                    layers.unshift(pointFeatures);
+                    netFlag = true;
+                    createLayers('#netgraph', layers, {
+                      width: 960,
+                      height: 600
+                    })
                     console.log(data);
                     console.log("Success");
                     //window.location.reload();

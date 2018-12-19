@@ -11,15 +11,18 @@ def shp2geojson(fp, layer_num=0):
 def getNetwork(fp):
     with open(fp, 'r') as f:
         lines = f.readlines()
-        print len(lines)
         line1 = lines[0]
-        print line1
         summary = line1.strip().split('#')
         node_num = int(summary[1])
         edge_num = int(summary[3])
         count = 0
 
-        feature_dict = { 
+        point_geojson = {
+            "type": "FeatureCollection",
+            "features": []
+        }
+
+        line_geojson = {
             "type": "FeatureCollection",
             "features": []
         }
@@ -35,7 +38,7 @@ def getNetwork(fp):
                 lon = float(node_els[1])
                 lat = float(node_els[2])
                 points[id] = [lon, lat]
-                feature_dict['features'].insert(0, {
+                point_geojson['features'].append({
                     "id": id,
                     "type": "Feature",
                     "geometry": {
@@ -47,7 +50,7 @@ def getNetwork(fp):
                 edge_els = line.strip().split(',')
                 edge_point1 = int(edge_els[0])
                 edge_point2 = int(edge_els[1])
-                feature_dict['features'].append(
+                line_geojson['features'].append(
                     {
                         "type": "Feature",
                         "geometry": {
@@ -56,7 +59,7 @@ def getNetwork(fp):
                         }
                     }
                 )
-        return feature_dict
+        return point_geojson, line_geojson
 
 def getWeightMatrix(fp):
     with open(fp, 'r') as f:
@@ -68,7 +71,8 @@ if __name__ == '__main__':
         j = shp2geojson('../files/JayLee/SocialNetworkSimulator/Shapefile/SRATiger2010.shp')
         f.write(j)
     '''
-    x = getNetwork('/Users/jianfengzhu/Desktop/project /input/CityNetwork1.txt')
-    y = getWeightMatrix('/Users/jianfengzhu/Desktop/project /input/WeightMatrix326.txt')
+    x, y = getNetwork('/Users/jianfengzhu/Desktop/project /input/CityNetwork1.txt')
+    z = getWeightMatrix('/Users/jianfengzhu/Desktop/project /input/WeightMatrix326.txt')
     print x
     print y
+    print z

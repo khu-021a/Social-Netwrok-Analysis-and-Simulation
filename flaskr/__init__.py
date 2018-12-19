@@ -6,6 +6,7 @@ import json
 from flask import Flask
 from flask import send_from_directory
 from flask import request
+from pymongo import MongoClient
 import importlib
 import networkx as nx 
 import difsim 
@@ -17,6 +18,9 @@ import community
 import linearthreshold
 import cascade
 import geo
+
+
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -32,6 +36,11 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+    client = MongoClient('localhost',27017)
+    db = client['network']
+    shapefile = db['shapefile']
+    citynetwork = db['citynetwork']
+    weightmatrix = db['weightmatrix']
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -46,6 +55,8 @@ def create_app(test_config=None):
     except OSError:
         pass
     
+
+
     def allowed_file(filename):
         return '.' in filename and \
         filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
@@ -59,11 +70,7 @@ def create_app(test_config=None):
     def smallworld():
         if request.method == 'POST':
             raw_data = request.form
-            print(raw_data)
-            print(json.dumps(raw_data))
             data = json.loads(json.dumps(raw_data))
-            print(data)
-            print(type(data['nodes']))
             nodes = int(data['nodes'])
             outdegree = int(data['outdegree'])
             rewirepb = float(data['rewirepb'])
@@ -77,7 +84,6 @@ def create_app(test_config=None):
     def prefattach():
         if request.method == 'POST':
             raw_data = request.form
-            print(raw_data)
             data = json.loads(json.dumps(raw_data))
             nodes = int(data['nodes'])
             outdegree = int(data['outdegree'])
@@ -90,7 +96,6 @@ def create_app(test_config=None):
     def rand():
         if request.method == 'POST':
             raw_data = request.form
-            print(raw_data)
             data = json.loads(json.dumps(raw_data))
             nodes = int(data['nodes'])
             edges = int(data['edges'])
@@ -103,7 +108,6 @@ def create_app(test_config=None):
     def seednodes():
         if request.method == 'PUT':
             raw_data = request.form
-            print(raw_data)
             data = json.loads(json.dumps(raw_data))
             seednodes = int(data['seednodes'])
             algorithm = data['algorithm']
@@ -112,14 +116,12 @@ def create_app(test_config=None):
             seed_nodes = seeds.seeds(s1,seednodes,algorithm)
             #--datatransfer.datatransfer(s1,seed_nodes)
             results = datatransfer.datatransfer(s1,seed_nodes,[])
-            print(results)
             return json.dumps(results)
 
     @app.route('/comm', methods=['PUT'])
     def comm():
         if request.method == 'PUT':
             raw_data = request.form
-            print(raw_data)
             data = json.loads(json.dumps(raw_data))
             opin = float(data['pro_opinion'])
             search_type = data['search_type']
@@ -128,15 +130,12 @@ def create_app(test_config=None):
                 results = datatransfer.datatransfer(s1,[],community.find_opinionleaders(community.communityCNM(s1),opin))
             else:
                 results = datatransfer.datatransfer(s1,[],seeds.rnd(100,int(100*opin)))
-            
-            print(results)
             return json.dumps(results)
 
     @app.route('/diff', methods=['PUT'])
     def diff():
         if request.method == 'PUT':
             raw_data = request.form
-            print(raw_data)
             data = json.loads(json.dumps(raw_data))
             s1 = graph.samllworld_gnm(100, 5, .15)
             model_type = data['model_type']
@@ -165,7 +164,6 @@ def create_app(test_config=None):
         if request.method == 'POST':
             raw_data = request.files
             files = dict(raw_data)
-            print(files)
             for f in files.values():
                 name = f[0].filename
                 content = f[0].read()
@@ -182,30 +180,28 @@ def create_app(test_config=None):
         if request.method == 'POST':
             raw_data = request.files
             files = dict(raw_data)
-            print(files)
-            for f in files.values():
-                name = f[0].filename
-                content = f[0].read()
-                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
-                local_f.write(content)
-                local_f.close()
-
-            return "ok"
+            f = files.values()[0][0]
+            name = f.filename
+            content = f.read()
+            local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
+            local_f.write(content)
+            local_f.close()
+            point, line = geo.getNetwork(os.path.join(UPLOAD_FOLDER, name))
+            return json.dumps({'point': point, 'line': line})
 
     @app.route('/LoadWeight', methods=['POST'])
     def LoadWeight ():
         if request.method == 'POST':
             raw_data = request.files
             files = dict(raw_data)
-            print(files)
-            for f in files.values():
-                name = f[0].filename
-                content = f[0].read()
-                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
-                local_f.write(content)
-                local_f.close()
-
-            return "ok"           
+            f = files.values()[0][0]
+            name = f.filename
+            content = f.read()
+            local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
+            local_f.write(content)
+            local_f.close()
+            matrix = geo.getWeightMatrix(os.path.join(UPLOAD_FOLDER, name))
+            return json.dumps(matrix)
        
         
     return app

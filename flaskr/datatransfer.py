@@ -18,8 +18,7 @@ def datatransfer(net, seed_list = [], ol_list = []):
     return {"nodes":nodes, "links":links}
 
 
-
-
-Rnd = snap.TRnd(1,0)
-UGraph1 = graph.samllworld_gnm(10, 2, 0, Rnd)
-print(datatransfer(UGraph1))
+if __name__ == "__main__":
+    Rnd = snap.TRnd(1,0)
+    UGraph1 = graph.samllworld_gnm(10, 2, 0, Rnd)
+    print(datatransfer(UGraph1))
