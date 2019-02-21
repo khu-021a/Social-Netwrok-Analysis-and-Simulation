@@ -1,0 +1,92 @@
+.node-normal {
+    fill: #84BD00;
+    stroke: #2c282c;
+    stroke-width: 1.5px;
+}
+
+.node-seed {
+    fill: #e34f33;
+    stroke: #2c282c;
+    stroke-width: 1.5px;
+}
+
+.nodes > g > text {
+    fill: #edf1ff;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.opinion {
+    stroke: #975a58;
+    stroke-width: 3px;
+}
+
+.link-normal {
+    stroke: #848587;
+    stroke-width: 1px;
+    stroke-opacity: .75;
+}
+
+.bc-color-1 {
+    fill: #F7F4FE;
+}
+
+.bc-color-2 {
+    fill: #B8A0F7;
+}
+
+.bc-color-3 {
+    fill: #8D65F4;
+}
+
+.bc-color-4 {
+    fill: #652FF3;
+}
+
+.cc-color-1 {
+    fill: #D9F8F6;
+}
+
+.cc-color-2 {
+    fill: #8ADDD7;
+}
+
+.cc-color-3 {
+    fill: #4FBDB5;
+}
+
+.cc-color-4 {
+    fill: #189B91;
+}
+
+.dc-color-1 {
+    fill: #FFF4F3;
+}
+
+.dc-color-2 {
+    fill: #FFA49A;
+}
+
+.dc-color-3 {
+    fill: #FF6858;
+}
+
+.dc-color-4 {
+    fill: #FF2F19;
+}
+
+.ec-color-1 {
+    fill: #FFFBF3;
+}
+
+.ec-color-2 {
+    fill: #FFDF9A;
+}
+
+.ec-color-3 {
+    fill: #FFC958;
+}
+
+.ec-color-4 {
+    fill: #FFB519;
+}

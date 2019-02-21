@@ -1,0 +1,19 @@
+.polygon path {
+    fill: lightblue;
+    stroke: black;
+}
+
+.line path {
+    fill: transparent;
+    stroke: green;
+}
+
+.point-cl-normal {
+    fill: #84BD00;
+    stroke: #84BD00;
+}
+
+.point-cl-diffused {
+    fill: #f55;
+    stroke: #f55;
+}
