@@ -1,244 +1,1994 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-       
-        <!-- Bootstrap CSS and JS-->
-        <title>Social Network Analysis and Simulation</title>
-        <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
-        <link href="/static/css/dashboard.css" rel="stylesheet">
-        <link href="/static/libs/fontawesome/css/all.min.css" rel="stylesheet">
-        <link href="/static/libs/mapbox-gl/mapbox-gl.css" rel="stylesheet" />
-        <link href="/static/libs/chartist/chartist.min.css" rel="stylesheet">
-        
-    </head>
-<body>
-    <body>
-        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-          <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">#Project name#</a>
-        </nav>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-        <div class="container-fluid">
-          <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-              <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                      <span class="fas fa-home"></span>
-                      Home <span class="sr-only">(current)</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span class="fas fa-book-open"></span>
-                      Documents
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span class="far fa-hand-point-right"></span>
-                      Examples
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span class="fab fa-github"></span>
-                      GitHub
-                    </a>
-                  </li>
-                </ul>
+    <!-- Bootstrap CSS and JS-->
+    <title>Social Network Analysis and Simulation</title>
+    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/fg.css">
+    <link rel="stylesheet" href="/static/css/geo.css">
     
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                  <span>Network</span>
-                  <a class="d-flex align-items-center text-muted" href="#">
-                    <span data-feather="plus-circle"></span>
-                  </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span data-feather="file-text"></span>
-                      Network1
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span data-feather="file-text"></span>
-                      Network2
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span data-feather="file-text"></span>
-                      Network3
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span data-feather="file-text"></span>
-                      Network4
-                    </a>
-                  </li>
-                </ul>
+    <title></title>
+    <style>
 
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>Simulation</span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                      <span data-feather="plus-circle"></span>
-                    </a>
-                  </h6>
-                  <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                      <a class="nav-link" href="#" id="t">
-                        <span data-feather="file-text"></span>
-                        Threshold Model
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Simulation2
-                      </a>
-                    </li>
-                    
-                  </ul>
-              </div>
-            </nav>
-    
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-              
-               <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                
-                <div class="btn-toolbar mb-2 mb-md-0">
-                  <div class="btn-group mr-2">
-                    <button class="btn btn-sm btn-outline-secondary">Load</button>
-                    <button class="btn btn-sm btn-outline-secondary">Export</button>
-                  </div>
-                  
+      #ul-vis, #cl-vis {
+        width: 100%;
+        height: 100%;
+      }
+
+      #ul-graph, #cl-graph {
+        width: 100%;
+        height: 100%;
+      }
+
+      #ul-graph > svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .hide{
+        display:none;
+      }
+
+      .center {
+        margin: 0 auto;
+        padding: 0 auto;
+      }
+      
+      [name="model"] {
+        -webkit-appearance: checkbox; /* Chrome, Safari, Opera */
+        -moz-appearance: checkbox;    /* Firefox */
+        -ms-appearance: checkbox;     /* not currently supported */
+      }
+
+      textarea {
+        width: 155px;
+        height: 35px;
+        min-height: 30px;
+        max-height: 60px;
+      }
+
+      .box{
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        width: 100vw;
+        height: 100vh;
+      }
+      .box2{
+        display:flex;
+        align-items:stretch;
+        height: 100%;
+      }
+      
+      .box21 {
+        width: 28vw;
+        background-color:#f5f5f5;
+        overflow: auto;
+      }
+      .box22 {
+        width: calc(100% - 28vw);
+      }
+
+      [type="radio"] {
+        margin: auto 2px;
+      }
+
+      .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        margin-top: 4%;
+      }
+
+      .form-row {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 3px 10px;
+      }
+
+      .form-col {
+        margin: auto 5px;
+      }
+
+      .form-els-center {
+        justify-content: center;
+      }
+
+      .form-el-left {
+        align-self: flex-start;
+        margin-left: 10%;
+      }
+
+      .network-label {
+        width: 150px;
+        text-align: center;
+      }
+
+      .param-input {
+        width: 150px;
+      }
+
+      .table-input {
+        width: 100px;
+      }
+
+      .upload-btn {
+        width: 155px;
+      }
+
+      .table-restrict {
+        max-height: 75px;
+      }
+
+      th, td {
+        padding: 0;
+      }
+
+      .custom-file-label::after {
+        content: none;
+      }
+
+      .polygon path {
+        fill: lightblue;
+        stroke: black;
+      }
+
+      .line path {
+        fill: transparent;
+        stroke: green;
+      }
+
+      .point-cl-normal {
+        fill: #84BD00;
+        stroke: #84BD00;
+      }
+
+      .point-cl-diffused {
+        fill: #f55;
+        stroke: #f55;
+      }
+
+      .cl-chart {
+        width: 300px;
+        height: 400px;
+      }
+
+      .c-stats {
+        width: 300px;
+        height: 360px;
+      }
+
+      #ul-vis, #ulr-vis, #cl-vis, #ulr-graph {
+        width: 100%;
+        height: 100%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="box1">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">Social Network Analysis & Simulation</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="network-generators" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Network</a>
+                <div class="dropdown-menu" aria-labelledby="network-generators">
+                  <h5 class="dropdown-header">Network Generators</h5>
+                  <a class="dropdown-item with-form" href="#" id="sw-option" data-ref="#sw-form">Small World</a>
+                  <a class="dropdown-item with-form" href="#" id="pa-option" data-ref="#pa-form">Pref-Attach</a>
+                  <a class="dropdown-item with-form" href="#" id="rnd-option" data-ref="#rnd-form">Random</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item disabled" href="/export-ul" id="export-option">Export Network</a>
                 </div>
-              </div> -->
-              <div class="my-4 w-100" id="map" style="width: 900px; height: 380px;"></div> 
-              <div class="ct-chart ct-perfect-fourth" ></div>
-
-
-            <!-- Modal -->
-            <div class="modal fade" id="Dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Threshold Model</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="network-analyst" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Analysis</a>
+                <div class="dropdown-menu" aria-labelledby="network-analyst">
+                  <h5 class="dropdown-header">Centralities</h5>
+                  <a class="dropdown-item" href="#" id="dc-option" data-type="dc">Degree Centrality</a>
+                  <a class="dropdown-item" href="#" id="bc-option" data-type="bc">Betweenness Centrality</a>
+                  <a class="dropdown-item" href="#" id="cc-option" data-type="cc">Closeness Centrality</a>
+                  <a class="dropdown-item" href="#" id="ec-option" data-type="ec">Eigenvector Centrality</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#" id="community">Community Detection</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="diffusion-simulators" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Simulator</a>
+                <div class="dropdown-menu" aria-labelledby="diffusion-simulators">
+                    <a class="dropdown-item with-form" href="#" id="user-level" data-ref="#ul-form">User Level</a>
+                    <a class="dropdown-item" href="#" id="user-level-ranges" data-toggle="modal" data-target="#ulr-dialog">User Level with Ranges</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item with-form" href="#" id="city-level" data-ref="#cl-form">City Level</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="box2"> 
+        <div class="box21">
+          <div id="sw-form">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" id="sw-alert">
+                    The network can be dragged and zoomed!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col"><label for="nodes">Nodes</label></div>
-                      <div class="col"><input type="number" id="nodes" name="nodes" min="1"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="edges">Edges</label></div>
-                      <div class="col"><input type="number" id="edges" name="edges" min="0"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="infected">Infected</label></div>
-                      <div class="col"><input type="number" id="infected" name="infected" min="0" max="1" step="1e-5" vaule="0.1"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="threshold">Threshold</label></div>
-                      <div class="col"><input type="number" id="threshold" name="threshold" min="0" max="1" step="1e-5"></div>
-                      <div class="w-100"></div>
-                      <div class="col"><label for="iteration">Iteration</label></div>
-                      <div class="col"><input type="number" id="iteration" name="iteration" min="1"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5 class="center">Small World Graph Generator</h5> </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="sw-node-num">Node Number: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="sw-node-num" name="sw-nodes" min="1" placeholder="Node Number" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="sw-out-degree">Out Degree: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="sw-out-degree" name="sw-degree" min="0" placeholder="Out Degree" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="sw-rewire-prob">Rewire Probability: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="sw-rewire-prob" name="sw-prob" min="0" max="1" step="1e-8" placeholder="Rewire Probability" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><button type="button" class="btn btn-primary center" id="small-world">Generate Network</button></div>
+              </div>
+            </div>
+          </div>
+          <div id="pa-form" class="hide">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" id="pa-alert">
+                    The network can be dragged and zoomed!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5 class="center">Pre-Attach Graph Generator</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="pa-node-num">Node Number: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="pa-node-num" name="pa-nodes" min="1" placeholder="Node Number" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="pa-out-degree">Out Degree: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="pa-out-degree" name="pa-degree" min="0" placeholder="Out Degree" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><button type="button" class="btn btn-primary center" id="pref-attach">Generate Network</button></div>
+              </div>
+            </div>
+          </div>
+          <div id="rnd-form" class="hide">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" id="rnd-alert">
+                    The network can be dragged and zoomed!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5 class="center">Random Graph Generator</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="rnd-node-num">Node Number: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="rnd-node-num" name="rnd-nodes" min="1" placeholder="Node Number" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="rnd-edge-num">Edge Number: </label></div>
+                <div class="form-col"><input type="number" class="param-input" id="rnd-edge-num" name="rnd-edges" min="0" placeholder="Edge Number" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><button type="button" class="btn btn-primary center" id="random">Generate Network</button></div>
+              </div>
+            </div>
+          </div>
+          <div id="centrality-stats" class="hide">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div id="dc-stats" class="c-stats hide"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div id="bc-stats" class="c-stats hide"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div id="cc-stats" class="c-stats hide"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div id="ec-stats" class="c-stats hide"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="ul-form" class="hide">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" id="ul-alert">
+                    A generated network is required here!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5 class="center">Seed Nodes</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="seed-num">Seed Nodes: </label></div>
+                <div class="form-col"><input type="number" id="seed-num" class="param-input" name="nodes" min="1" placeholder="Seed Node Number" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="seed-indicator">Algorithm: </label></div>
+                <div class="form-col">
+                  <select id="seed-indicator" class="param-input" required>
+                    <option value="DC">Degree Centrality</option>
+                    <option value="BC">Between Centrality</option>
+                    <option value="CC">Closeness Centrality</option>
+                    <option value="EC">Eigenvect Centrality</option>
+                    <option value="Random">Random</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <button type="button" class="btn btn-primary" id="get-seeds">Generate Seed Nodes</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5 class="center">Diffusion Models</h5></div>
+              </div>
+              <div class="form-row form-el-left">
+                <div class="form-col"><input type="radio" name="model" class="ltm" id="ltm-option" value="LTM" checked><label for="ltm-option">Linear Threshold Model</label></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="ltm-threshold">Threshold: </label></div>
+                <div class="form-col"><input type="number" id="ltm-threshold" class="ltm param-input" name="ltm-param" min="0" max="1" step="1e-8" placeholder="Threshold" required></div>
+              </div>
+              <div class="form-row form-el-left">
+                <div class="form-col"><input type="radio" name="model" class="icm" id="icm-option" value="ICM"><label for="icm-option">Independent Cascade Model</label></div>
+              </div>
+              <div class="form-row form-els-center">
+                <div class="form-col"><label class="network-label" for="">Opinion Leader Scale: </label></div>
+                <div class="form-col">
+                  <div class="form-check"><input type="radio" name="scale" value="G" class="icm" id="global" checked required disabled><label for="global">Whole Network</label></div>
+                  <div class="form-check"><input type="radio" name="scale" value="R" class="icm" id="regional" required disabled><label for="regional">Each Community</label></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="proportion">Opinion Leader Proportion: </label></div>
+                <div class="form-col"><input type="number" id="proportion" class="icm param-input" name="ratio" min="0" max="1" step="1e-8" placeholder="Proportion" required disabled></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <button type="button" class="icm btn btn-primary" id="get-opinion-leaders" disabled>Generate Opinion Leaders</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="pb-opinion-leaders">Diffuse Probability (Opinion Leader): </label></div>
+                <div class="form-col"><input type="number" id="pb-opinion-leaders" class="icm param-input" name="icm-param-o" min="0" max="1" step="1e-8" placeholder="Leader Probability" required disabled></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label class="network-label" for="pb-normal-people">Diffuse Probability (Normal): </label></div>
+                <div class="form-col"><input type="number" id="pb-normal-people" class="icm param-input" name="icm-param-n" min="0" max="1" step="1e-8" placeholder="Normal Probability" required disabled></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><button type="button" class="btn btn-primary" id="diffuse-ul">Diffusion</button></div>
+              </div>
+            </div>
+          </div>
+          <div id="ul-range-form" class="hide">
+            <div class="form">
+              <div id="ulr-ltm-form" class="ulr-form hide">
+                <div class="form-row">
+                  <div class="form-col"><h5>Linear Threshold Model</h5></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-min">Min Seed Number: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-seed-min" class="param-input" name="ltm-node-min" min="1" placeholder="Min Seed Number" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-max">Max Seed Number: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-seed-max" class="param-input" name="ltm-node-max" min="1" placeholder="Max Seed Number" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-range-num">Seed Range Number: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-seed-range-num" class="param-input" name="ltm-seed-range-num" min="1" placeholder="Seed Range Number" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-indicator">Algorithm: </label></div>
+                  <div class="form-col">
+                    <select id="ulr-ltm-indicator" class="param-input" required>
+                      <option value="DC">Degree Centrality</option>
+                      <option value="BC">Between Centrality</option>
+                      <option value="CC">Closeness Centrality</option>
+                      <option value="EC">Eigenvect Centrality</option>
+                      <option value="Random">Random</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-threshold-min">Min Threshold: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-threshold-min" class="param-input" name="ltm-threshold-min" min="0" max="1" step="1e-8" placeholder="Min Threshold" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-threshold-max">Max Threshold: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-threshold-max" class="param-input" name="ltm-threshold-max" min="0" max="1" step="1e-8" placeholder="Max Threshold" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-threshold-range-num">Threshold Range Number: </label></div>
+                  <div class="form-col"><input type="number" id="ulr-ltm-threshold-range-num" class="param-input" name="ltm-threshold-range-num" min="1" placeholder="Threshold Range Number" required></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><button type="button" class="btn btn-primary" id="ulr-ltm-run">Execute</button></div>
+                </div>
+              </div>
+            </div>
+            <div class="form">
+              <div id="ulr-icm-form" class="ulr-form hide">
+                <div class="form-row">
+                  <div class="form-col"><h5>Independent Cascade Model</h5></div>
+                </div>
+                <div id="ulr-icm-seeds" data-key="seeds" data-default="#ulr-icm-seed-num" data-ranged="#ulr-icm-seed">
+                  <div class="ulr-default">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-num">Seed Nodes: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-seed-num" class="param-input" name="ulr-icm-nodes" min="1" placeholder="Seed Node Number" required></div>
                     </div>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="run">Run</button>
+                  <div class="ulr-ranged">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-min">Min Seed Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-seed-min" class="param-input" name="ulr-icm-node-min" min="1" placeholder="Min Seed Number" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-max">Max Seed Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-seed-max" class="param-input" name="ulr-icm-node-max" min="1" placeholder="Max Seed Number" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-range-num">Seed Range Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-seed-range-num" class="param-input" name="ulr-icm-seed-range-num" min="1" placeholder="Seed Range Number" required></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="ulr-icm-indicator">Algorithm: </label></div>
+                  <div class="form-col">
+                    <select id="ulr-icm-indicator" class="param-input" required>
+                      <option value="DC">Degree Centrality</option>
+                      <option value="BC">Between Centrality</option>
+                      <option value="CC">Closeness Centrality</option>
+                      <option value="EC">Eigenvect Centrality</option>
+                      <option value="Random">Random</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><label class="network-label" for="">Opinion Leader Scale: </label></div>
+                  <div class="form-col">
+                    <div class="form-check"><input type="radio" name="ulr-icm-scale" value="G" class="ulr-icm" id="ulr-icm-global" checked required><label for="ulr-icm-global">Whole Network</label></div>
+                    <div class="form-check"><input type="radio" name="ulr-icm-scale" value="R" class="ulr-icm" id="ulr-icm-regional" required><label for="ulr-icm-regional">Each Community</label></div>
+                  </div>
+                </div>
+                <div id="ulr-icm-ratio" data-key="op-ratio" data-default="#ulr-icm-proportion" data-ranged="#ulr-icm-proportion">
+                  <div class="ulr-default">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion">Opinion Leader Proportion: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-proportion" class="param-input" name="ulr-icm-ratio" min="0" max="1" step="1e-8" placeholder="Proportion" required></div>
+                    </div>
+                  </div>
+                  <div class="ulr-ranged">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-min">Min Opinion Leader Proportion: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-proportion-min" class="param-input" name="ulr-icm-ratio-min" min="0" max="1" step="1e-8" placeholder="Proportion" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-max">Max Opinion Leader Proportion: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-proportion-max" class="param-input" name="ulr-icm-ratio-max" min="0" max="1" step="1e-8" placeholder="Proportion" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-range-num">Proportion Range Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-proportion-range-num" class="param-input" name="ulr-icm-ratio-range-num" min="1" placeholder="Proportion" required></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="ulr-icm-opl-prob" data-key="op-prob" data-default="#ulr-icm-pb-opinion-leaders" data-ranged="#ulr-icm-pb-opinion-leaders">
+                  <div class="ulr-default">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders">Diffuse Probability (Opinion Leader): </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders" class="param-input" name="ulr-icm-icm-param-o" min="0" max="1" step="1e-8" placeholder="Leader Probability" required></div>
+                    </div>
+                  </div>
+                  <div class="ulr-ranged">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-min">Min Opinion Leader Probability: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-min" class="param-input" name="ulr-icm-icm-param-o-min" min="0" max="1" step="1e-8" placeholder="Leader Probability" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-max">Max Opinion Leader Probability: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-max" class="param-input" name="ulr-icm-icm-param-o-max" min="0" max="1" step="1e-8" placeholder="Leader Probability" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-range-num">OP Probability Range Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-range-num" class="param-input" name="ulr-icm-icm-param-o-range-num" min="1" placeholder="Leader Probability" required></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="ulr-icm-normal-prob" data-key="n-prob" data-default="#ulr-icm-pb-normal-people" data-ranged="#ulr-icm-pb-normal-people">
+                  <div class="ulr-default">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people">Diffuse Probability (Normal): </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people" class="param-input" name="icm-param-n" min="0" max="1" step="1e-8" placeholder="Normal Probability" required></div>
+                    </div>
+                  </div>
+                  <div class="ulr-ranged">
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-min">Min Normal Probability: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-min" class="param-input" name="icm-param-n-min" min="0" max="1" step="1e-8" placeholder="Normal Probability" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-max">Max Normal Probability: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-max" class="param-input" name="icm-param-n-max" min="0" max="1" step="1e-8" placeholder="Normal Probability" required></div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-range-num">Normal Probability Range Number: </label></div>
+                      <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-range-num" class="param-input" name="icm-param-n-range-num" min="1" placeholder="Normal Probability" required></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-col"><button type="button" class="btn btn-primary" id="ulr-icm-run">Execute</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="cl-form" class="hide">
+            <div class="form">
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" id="cl-alert">
+                    Analysis can't be used here!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5>Network</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="custom-file">
+                    <input multiple type="file" id="map-layers" class="custom-file-input param-input" name="map-layers" required>
+                    <label class="custom-file-label" for="map-layers">Choose file</label>
+                  </div>
+                </div>
+                <div class="form-col">
+                  <button type="button" class="btn btn-primary upload-btn" id="upload-layers">Load Base Map</button>   
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="custom-file">
+                    <input type="file" id="net-file" class="custom-file-input param-input" name="net-file" required>
+                    <label class="custom-file-label" for="net-file">Choose file</label>
+                  </div>
+                </div>
+                <div class="form-col">
+                  <button type="button" class="btn btn-primary upload-btn" id="upload-net">Load Network File</button>
+                </div>
+              </div>
+              <div class="form-row">  
+                <div class="form-col">
+                  <div class="custom-file">
+                    <input type="file" id="weight-matrix" class="custom-file-input param-input" name="weight-matrix" required>
+                    <label class="custom-file-label" for="weight-matrix">Choose file</label>
+                  </div>
+                </div>
+                <div class="form-col">
+                  <button type="button" class="btn btn-primary upload-btn" id="upload-weight">Load Weight File</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><label for="sources" class="network-label">Source City: </label></div>
+
+                <div class="form-col">
+                  <textarea rows="5" cols="20" id="sources" name="source-cities" placeholder="Source City IDs" required></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5>Termination</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <input type="radio" id="step-num-radio" name="termination" class="step" value="step" checked>
+                  <label for="step-num-radio">Step Number: </label>
+                </div>
+                <div class="form-col">
+                  <input type="number" id="step-num" class="step param-input" name="step-param" min="1" step="1" placeholder="Step Number" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <input type="radio" id="cover-ratio-radio" name="termination" class="coverage" value="coverage">
+                  <label for="cover-ratio-radio">Coverage: </label>
+                </div>
+                <div class="form-col">
+                  <input type="number" id="cover-ratio" class="coverage param-input" name="coverage-param" min="0" max="1" step="1e-8" placeholder="Coverage" disabled>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><h5>Public Attention Labels</h5></div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <button type="button" class="btn btn-primary" id="slot-weights">Variable temporal weight</button>
+                  <button type="button" class="btn btn-primary" id="clear-weights">Clear</button>
+                  <button type="button" class="btn btn-primary" id="set-weights">Setting</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label for="fixed-weight">Fixed temporal weight</label>
+                  <input type="number" id="fixed-weight" class="param-input" min="0" max="1" step="1e-8" placeholder="Temporal Weight">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div id="param-table" class="table-responsive table-restrict hide">
+                    <table class="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Urgency Value</th>
+                        </tr>
+                      </thead>
+                      <tbody class="urgency-values"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <h5>Spatial Weight</h5>
+                </div>
+              </div>
+              <div class="form-row form-els-center">
+                <div class="form-col">
+                  <input type="radio" name="spatial-weights" value="G" class="fixed" id="spatial-fixed" checked required><label for="spatial-fixed">Fixed</label>
+                </div>
+                <div class="form-col">
+                  <input type="radio" name="spatial-weights" value="R" class="decaying" id="spatial-decaying" required><label for="spatial-decaying">Decay</label>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label for="decay-radius" class="network-label">Decay radius (mi): </label>
+                </div>
+                <div class="form-col">
+                  <input type="number" id="decay-radius" class="decaying param-input" name="decay-radius" min="0" step="1e-8" placeholder="Decay Radius" required disabled>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label for="decay-ratio" class="network-label">Decay ratio: </label>
+                </div>
+                <div class="form-col">
+                  <input type="number" id="decay-ratio" class="decaying param-input" name="decay-ratio" min="0" max="1" step="1e-8" placeholder="Decay Ratio" required disabled>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col"><button type="button" class="btn btn-primary" id="diffuse-cl">Diffusion</button></div>
+                <div class="form-col"><button type="button" class="btn btn-primary" id="results-cl" data-toggle="modal" data-target="#cl-dialog" disabled>Results</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box22">
+          <div id="ul-vis">
+            <div id="ul-graph"></div>
+          </div>
+          <div id="ulr-vis" class="hide">
+            <div id="ulr-graph"></div>
+          </div>
+          <div id="cl-vis" class="hide">
+            <div id="cl-graph"></div>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+    <div class="modal fade" id="cl-dialog" tabindex="-1" role="dialog" aria-labelledby="clModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered w-50 h-50 mw-100 mh-100" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clModalLabel">City Diffusion Statistics</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <div id="num-chart" class="cl-chart"></div>
+                </div>
+                <div class="col">
+                  <div id="ratio-chart" class="cl-chart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a class="btn btn-primary" href="/export-cl" target="_blank" role="button">Export Result Data</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="ulr-dialog" tabindex="-1" role="dialog" aria-labelledby="ulrModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ulrModalLabel">Configure Arguments</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <div id="ulr-model">
+                    <h6>Choose Model: </h6>
+                    <div class="form-check"><input type="radio" name="models" value="ltm" class="ulr-model" id="ulr-ltm" data-form="#ulr-ltm-form" checked required><label for="ulr-ltm">Linear Threshold Model</label></div>
+                    <div class="form-check"><input type="radio" name="models" value="icm" class="ulr-model" id="ulr-icm" data-form="#ulr-icm-form" data-ref="#ulr-icm-args" required><label for="ulr-icm">Independent Cascade Model</label></div>
+                  </div>
+                  <div id="ulr-icm-args" class="ulr-options hide">
+                    <h6>Choose 2 arguments: </h6>
+                    <div class="form-check"><input type="checkbox" name="args" value="" class="ulr-icm-arg" id="ulr-icm-seed" data-ref="#ulr-icm-seeds" required><label for="ulr-icm-seed">Seed Nodes</label></div>
+                    <div class="form-check"><input type="checkbox" name="args" value="" class="ulr-icm-arg" id="ulr-icm-op-ratio" data-ref="#ulr-icm-ratio" required><label for="ulr-icm-op-ratio">Opinion Leader Proportion</label></div>
+                    <div class="form-check"><input type="checkbox" name="args" value="" class="ulr-icm-arg" id="ulr-icm-prob" data-ref="#ulr-icm-normal-prob" required><label for="ulr-icm-prob">Normal Node Probability</label></div>
+                    <div class="form-check"><input type="checkbox" name="args" value="" class="ulr-icm-arg" id="ulr-icm-op-prob" data-ref="#ulr-icm-opl-prob" required><label for="ulr-icm-op-prob">Opinion Leader Probability</label></div>
                   </div>
                 </div>
               </div>
             </div>
-              
-             
-            </main>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" id="ulr-config" class="btn btn-primary" data-ref="#ul-range-form" data-dismiss="modal">OK</button>
           </div>
         </div>
-    
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="/static/libs/jquery-3.3.1.min.js" ></script>
-        <script src="/static/libs/popper.min.js"></script>
-        <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/static/libs/mapbox-gl/mapbox-gl.js"></script>
-        <script src="/static/libs/f2.js"></script>
-        <script src="/static/libs/chartist/chartist.min.js"></script>
-        
-    
-    
-        <script>
-              mapboxgl.accessToken = 'pk.eyJ1IjoiaGs4MTEiLCJhIjoiY2lqYWd2Nmt4MDA5cXV4bHhpbXJ6b3Z2MSJ9.wm_sOHkCaL0qKtxqYSnVwg';
-              var map = new mapboxgl.Map({
-              container: 'map',
-              style: 'mapbox://styles/mapbox/streets-v9',
-              center:[-74.50,40],
-              zoom:9
-              });
+      </div>
+    </div>
 
+    <div class="modal fade" id="loading-dialog" tabindex="-1" role="dialog" aria-labelledby="LoadingModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered w-50 h-50" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Processing...</h4>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   
-              $(document).ready(function(){
-              $.ajax({
-              url: "/simulator1",
-              type:'POST',
-              data: {key1: 234}
-              }).done(function(res) {
-              console.log(res);
-              });    
-              });
-              
-              $( "#t" ).click(function() {
-                $('#Dialog').modal('show');
-              });
-              
-              $( "#run" ).click(function() {
-                var nodes=parseInt($('#nodes').val());
-                if(nodes<=0) {
-                  nodes=Math.random()*10;
-                }
-                var edges=parseInt($('#edges').val());
-                if(nodes<0) {
-                  edges=Math.random()*10;
-                }
-                var infected=parseFloat($('#infected').val());
-                if(infected<0 || infected>1){
-                  infected=Math.random();
-                }
-                var threshold=parseFloat($('#threshold').val());
-                if(threshold<0 || threshold>1){
-                  threshold=Math.random();
-                }
-                var iteration=parseInt($('#iteration').val());
-                if(iteration<0){
-                  iteration=Math.abs(iteration);
-                }
-              
-              
+    <script src="/static/libs/jquery-3.3.1.min.js" ></script>
+    <script src="/static/libs/popper.min.js"></script>
+    <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/libs/d3.min.js" charset="utf-8"></script>
+    <script src="/static/libs/highcharts/code/highcharts.js"></script>
+    <script src="/static/libs/highcharts/code/highcharts-3d.js"></script>
+    <script src="/static/js/fg.js"></script>
+    <script src="/static/js/geo.js"></script>
+    <script>
+      
+      var netData = null;
+      var centralityType = null;
+      var centralityColors = {
+        'bc': ['#F7F4FE', '#B8A0F7', '#8D65F4', '#652FF3'],
+        'cc': ['#D9F8F6', '#8ADDD7', '#4FBDB5', '#189B91'],
+        'dc': ['#FFF4F3', '#FFA49A', '#FF6858', '#FF2F19'],
+        'ec': ['#FFFBF3', '#FFDF9A', '#FFC958', '#FFB519']
+      };
+      var centralityTitles = {
+        'bc': 'Betweenness Centrality Distributions',
+        'cc': 'Closeness Centrality Distributions',
+        'dc': 'Degree Centrality Distributions',
+        'ec': 'Eigenvector Centrality Distributions'
+      };
+      
+      var fileSet = {};
+      var layers = [];
+      var baseFlag = false;
+      var netFlag = false;
+      var chartData = {};
+      var ulrICMStates = null;
 
-                $.ajax({
-                url: "/simulator1",
-                type:'POST',
-                data: {"nodes":nodes,"edges":edges,"infected":infected,"threshold":threshold,"iteration":iteration}
-                }).done(function(res) {
-                //chartist
-                var obj = JSON.parse(res)
-                
-                
-                new Chartist.Line('.ct-chart', obj);
-                    
-                console.log(res)
-                })
-              });
-          </script>
-</body>
+      ///////////////////////////////////////////////////
+
+      $(document).ajaxSend(function() {
+        $('#loading-dialog').modal('show');
+      });
+
+      $(document).ajaxComplete(function() {
+        $('#loading-dialog').on('shown.bs.modal', function(e) {
+          $('#loading-dialog').modal('hide');
+        });
+      });
+
+      ///////////////////////////////////////////////
+      var valExists = function(v) {
+        return (v !== undefined && v !== null);
+      };
+      
+      var generateRows = function(n, initVal) {
+      	if (n <= 0) {
+      		return null;
+      	} else {
+      		var sequence = Array.apply(null, {length: n}).map(function(value, index){
+              return index + 1;
+            });
+      		if (!valExists(initVal)) {
+      			return sequence.map(function(n) {
+      				return '<tr><th scope="row">' + n + '</th><td><input type="text" class="urgency table-input" placeholder="Temporal Weight" required></td></tr>';
+      			}).join('');
+      		} else {
+      			return sequence.map(function(n) {
+      				return '<tr><th scope="row">' + n + '</th><td><input type="text" class="urgency table-input" value="' + initVal + '" placeholder="Temporal Weight" required></td></tr>';
+      			}).join('');
+      		}
+      	}
+      };
+
+      var lockResultBtn = function() {
+        if (!$('#results-cl').prop('disabled')) {
+          $('#results-cl').prop('disabled', true);
+        }
+      };
+
+      var unlockResultBtn = function() {
+        if ($('#results-cl').prop('disabled')) {
+          $('#results-cl').prop('disabled', false);
+        }
+      };
+
+      var drawCentralityChart = function(cType) {
+        var anchor = cType + '-stats';
+        var dataset = netData[cType];
+        var colors = centralityColors[cType];
+        var title = centralityTitles[cType];
+        dataset = dataset.map(function(obj) {
+          obj.name = '';
+          obj.y = obj.ratio;
+          return obj;
+        });
+        $('#' + anchor).empty();
+        Highcharts.chart(anchor, {
+          chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+          },
+          title: {
+            text: title
+          },
+          tooltip: {
+            pointFormat: 'Range: {point.lower:.3f} - {point.upper:.3f}<br>Number: {point.number}<br>Ratio: {point.ratio}'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              colors: colors,
+              dataLabels: {
+                enabled: false
+              }
+            }
+          },
+          series: [{ data: dataset }]
+        });
+      };
+
+      var drawGraphUl = function() {
+        var net = netData['net'];
+        $('#ul-graph').empty();
+        forceGraph({
+          anchor: '#ul-graph',
+          nodeRadius: 5,
+          nodeTextKey: 'community',
+          emphasisFillKey: 'seed',
+          emphasisStrokeKey: 'leader'
+        })(net['nodes'], net['edges']);
+        if ($('#export-option').hasClass('disabled')) {
+          $('#export-option').removeClass('disabled');
+        }
+      };
+
+      var setStatusGen = function() {
+        if ($('#export-option').hasClass('disabled')) {
+          $('#export-option').removeClass('disabled');
+        }
+        if (!$('#centrality-stats').hasClass('hide')) {
+          $('#centrality-stats').addClass('hide');
+        }
+      };
+
+      var swHandler = function(event) {
+        var nodes = parseInt($('#sw-node-num').val());
+        var outDegree = parseInt($('#sw-out-degree').val());
+        var rewirePb = parseFloat($('#sw-rewire-prob').val());
+        
+        if (nodes !== NaN && outDegree !== NaN && rewirePb !== NaN) {
+          $.ajax({
+            url: '/generator/small-world',
+            type:'PUT',
+            data: { 
+              'nodes': nodes, 
+              'out-degree': outDegree, 
+              'rewire-pb': rewirePb 
+            }
+          }).done(function(data, status, xhr) {
+            netData = JSON.parse(data);
+            setStatusGen();
+            drawGraphUl();
+            drawCentralityChart('bc');
+            drawCentralityChart('cc');
+            drawCentralityChart('dc');
+            drawCentralityChart('ec');
+          }).fail(function(xhr, status, error) {
+            console.error(status);
+            console.error(error);
+          });
+        }
+      };
+
+      var paHandler = function(event) {
+        var nodes = parseInt($('#pa-node-num').val());
+        var outDegree = parseInt($('#pa-out-degree').val());
+        
+        if (nodes !== NaN && outDegree !== NaN) {
+          $.ajax({
+            url: '/generator/pref-attach',
+            type:'PUT',
+            data: { 
+              'nodes': nodes, 
+              'out-degree': outDegree 
+            }
+          }).done(function(data, status, xhr) {
+            //console.log(status);  
+            //console.log(data);
+            netData = JSON.parse(data);
+            setStatusGen();
+            drawGraphUl();
+            drawCentralityChart('bc');
+            drawCentralityChart('cc');
+            drawCentralityChart('dc');
+            drawCentralityChart('ec');
+          }).fail(function(xhr, status, error) {
+            console.error(status);
+            console.error(error);
+          });
+        }
+      };
+
+      var rndHandler = function(event) {
+        var nodes = parseInt($('#rnd-node-num').val());
+        var edges = parseInt($('#rnd-edge-num').val());
+      
+        if (nodes !== NaN && edges !== NaN) {
+          $.ajax({
+            url: '/generator/random',
+            type:'PUT',
+            data: {
+              'nodes': nodes,
+              'edges': edges
+            }
+          }).done(function(data, status, xhr) {
+            //console.log(status);  
+            console.log(data);
+            netData = JSON.parse(data);
+            setStatusGen();
+            drawGraphUl();
+            drawCentralityChart('bc');
+            drawCentralityChart('cc');
+            drawCentralityChart('dc');
+            drawCentralityChart('ec');
+          }).fail(function(xhr, status, error) {
+            console.error(status);
+            console.error(error);
+          });
+        }
+      };
+
+      var commHandler = function(event) {
+        $.ajax({
+          url: '/communities',
+          type:'GET'
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var net = JSON.parse(data);
+          $('#ul-graph').empty();
+          forceGraph({
+            anchor: '#ul-graph',
+            nodeRadius: 5,
+            nodeTextKey: 'community',
+            emphasisFillKey: 'seed',
+            emphasisStrokeKey: 'leader'
+          })(net['nodes'], net['edges']);
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var seedHandler = function(event) {
+        var seeds = parseInt($('#seed-num').val());
+        var indicator = $('#seed-indicator').val();
+        
+        $.ajax({
+          url: '/seeds',
+          type:'GET',
+          cache: false,
+          data: {
+            'seeds': seeds, 
+            'indicator': indicator
+          }
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var net = JSON.parse(data);
+          $('#ul-graph').empty();
+          forceGraph({
+            anchor: '#ul-graph',
+            nodeRadius: 5,
+            nodeTextKey: 'community',
+            emphasisFillKey: 'seed',
+            emphasisStrokeKey: 'leader'
+          })(net['nodes'], net['edges']);
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var opldHandler = function(event) {
+        var scale = $('[name="scale"]:checked').val()
+        var ratio = parseFloat($('#proportion').val());
+
+        $.ajax({
+          url: '/opinion-leaders',
+          type:'GET',
+          cache: false,
+          data: { 
+            'scale': scale, 
+            'ratio': ratio 
+          }
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var net = JSON.parse(data);
+          $('#ul-graph').empty();
+          forceGraph({
+            anchor: '#ul-graph',
+            nodeRadius: 5,
+            nodeTextKey: 'community',
+            emphasisFillKey: 'seed',
+            emphasisStrokeKey: 'leader'
+          })(net['nodes'], net['edges']);
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var ulHandler = function(event) {
+        if (!$('#centrality-stats').hasClass('hide')) {
+          $('#centrality-stats').addClass('hide');
+        }
+
+        var seeds = parseInt($('#seed-num').val()) || 1;
+        var indicator = $('#seed-indicator').val();
+        var model = $('[name="model"]:checked').val();
+        
+        var obj = {
+            'seeds': seeds,
+            'indicator': indicator,
+            'model': model
+        };
+
+        if (model == "LTM") {
+          obj['threshold'] = parseFloat($('#ltm-threshold').val()) || 0.4;
+        } else if (model == "ICM") {
+          obj ['pb-leaders'] = parseFloat($('#pb-opinion-leaders').val()) || 0.2;
+          obj ['pb-normal'] = parseFloat($('#pb-normal-people').val()) || 0.3;
+          obj ['scale'] = $('[name="scale"]:checked').val();
+          obj ['ratio'] = parseFloat($('#proportion').val()) || 0.0;
+        }
+        
+        $.ajax({
+          url: '/diffusion-ul',
+          type:'GET',
+          cache: false,
+          data: obj,
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var net = JSON.parse(data);
+          $('#ul-graph').empty();
+          forceGraph({
+            anchor: '#ul-graph',
+            nodeRadius: 5,
+            nodeTextKey: 'community',
+            emphasisFillKey: 'seed',
+            emphasisStrokeKey: 'leader'
+          })(net['nodes'], net['edges']);
+          var nodesToChange = net['nodes'].filter(function(node) {
+            return node['diffused'] > 0;
+          });
+          console.log(nodesToChange);
+          nodesToChange.forEach(function(node) {
+            (function(obj) {
+              setTimeout(function() {
+                var objID = obj['id'];
+                var objEl = $('g.nodes g#' + objID + ' circle');
+                objEl.removeClass('node-normal');
+                objEl.addClass('node-seed');
+              }, obj['diffused'] * 1500);
+            })(node);
+          });
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var basemapHandler = function (event) {
+        lockResultBtn();
+        var data = new FormData();
+        $.each(fileSet['map-layers'], function(k, v) {
+          data.append(k, v);
+        });
+
+        $.ajax({
+          url: "/map-layers",
+          type: "PUT",
+          data: data,
+          cache: false,
+          processData: false,
+          contentType: false
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var obj = JSON.parse(data);
+          if (baseFlag) {
+            layers.pop();
+            baseFlag = false;
+          }
+          layers.push(obj);
+          baseFlag = true;
+          
+          $('#cl-graph').empty();
+          createLayers('#cl-graph', layers, {
+            width: 960,
+            height: 600
+          });
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var netFileHandler = function(event) {
+        lockResultBtn();
+        var data = new FormData();
+        $.each(fileSet['network'], function(k, v) {
+          data.append(k, v);
+        });     
+
+        $.ajax({
+          url: "/net-file",
+          type: "PUT",
+          data: data,
+          cache: false,
+          processData: false,
+          contentType: false
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var obj = JSON.parse(data);
+          var lineFeatures = obj['line'];
+          var pointFeatures = obj['point'];
+          if (netFlag) {
+            layers.shift();
+            layers.shift();
+            netFlag = false;
+          }
+          layers.unshift(lineFeatures);
+          layers.unshift(pointFeatures);
+          netFlag = true;
+          
+          $('#cl-graph').empty();
+          createLayers('#cl-graph', layers, {
+            width: 960,
+            height: 600
+          });
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var weightFileHandler = function(event) {
+        lockResultBtn();
+        var data = new FormData();
+        $.each(fileSet['weights'], function(k, v) {
+          data.append(k, v);
+        });     
+
+        $.ajax({
+          url: "/weight-file",
+          type: "PUT",
+          data: data,
+          cache: false,
+          processData: false,
+          contentType: false
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+
+      var clHandler = function(event) {
+        if (!$('#centrality-stats').hasClass('hide')) {
+          $('#centrality-stats').addClass('hide');
+        }
+
+        var sources = $('#sources').val().split(',').map(function(el) {
+          return parseInt(el.trim());
+        });
+        var terminationType = $('[name="termination"]:checked').val();
+        var terminationParam = (terminationType === 'step') ? parseInt($('#step-num').val()) : (parseFloat($('#cover-ratio').val()) / 100);
+        var urgencyVals = $('.urgency').map(function() {
+          return parseFloat(this.value);
+        }).get()
+        var urgencyType = $('[name="spatial-weights"]:checked').val();
+        var decayParams = null;
+        if (urgencyType === 'R') {
+          decayParams = [parseFloat($('#decay-radius').val()), (parseFloat($('#decay-ratio').val()) / 100)];
+        }
+
+        var data = {
+          'sources': sources,
+          'termination': {
+            'type': terminationType,
+            'param': terminationParam
+          },
+          'urgency-values': urgencyVals,
+          'urgency-type': urgencyType,
+          'decay-params': decayParams
+        };
+        
+        $.ajax({
+          url: '/diffusion-cl',
+          type:'GET',
+          cache: false,
+          data: {
+            'data': JSON.stringify(data)
+          }
+        }).done(function(data, status, xhr) {
+          console.log(status);
+          console.log(data);
+          unlockResultBtn();
+          var obj = JSON.parse(data);
+          var diffusion = obj['diffusion'];
+
+          chartData['num'] = {
+            name: 'Active Node Number',
+            data: obj['statistics']['num_in_step']
+          };
+          chartData['ratio'] = {
+            name: 'Accumulated Active Node Ratio',
+            data: obj['statistics']['ratio_in_step']
+          };
+
+          var points = layers.shift();
+          var pointFeatures = points['features'];
+          var newPoints = {
+            type: 'FeatureCollection',
+            features: []
+          };
+          
+          for (var i = 0; i < pointFeatures.length; i++) {
+            var pointID = pointFeatures[i]['id'];
+            var newFeature = {
+              id: pointID,
+              type: "Feature",
+              geometry: pointFeatures[i]['geometry'],
+              properties: {}
+            };
+            var pointStatus = diffusion[pointID];
+            if (pointStatus === 0) {
+              newFeature['properties']['seed'] = true;
+              newFeature['properties']['diffused'] =  0;
+            } else if (pointStatus > 0) {
+              newFeature['properties']['seed'] = false;
+              newFeature['properties']['diffused'] =  pointStatus;
+            } else {
+              newFeature['properties']['seed'] = false;
+              newFeature['properties']['diffused'] =  -1;
+            }
+            newPoints['features'].push(newFeature);
+          }
+          layers.unshift(newPoints);
+          
+          $('#cl-graph').empty();
+          createLayers('#cl-graph', layers, {});
+
+          var nodesToChange = layers[0]['features'].filter(function(feature) {
+            return feature['properties']['diffused'] > 0;
+          });
+          nodesToChange.forEach(function(node) {
+            (function(obj) {
+              setTimeout(function() {
+                var objID = obj['id'];
+                var objEl = $('svg.geo-svg g.point #point' + objID);
+                objEl.removeClass('point-cl-normal');
+                objEl.addClass('point-cl-diffused');
+              }, obj['properties']['diffused'] * 1500);
+            })(node);
+          });
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      };
+      /////////////////////////////////////////////////
+
+      $('#cl-dialog').on('shown.bs.modal', function() {
+        Highcharts.chart('num-chart', {
+          title: {
+            text: 'Active Node in Each Step'
+          },
+          xAxis: {
+            title: {
+              text: 'Steps'
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Quantities'
+            }
+          },
+          //colors: ['#000000'],
+          series: [chartData['num']]
+        });
+
+        Highcharts.chart('ratio-chart', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Accumulated Active Node Ratio in Each Step'
+          },
+          xAxis: {
+            title: {
+              text: 'Steps'
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Percentages'
+            }
+          },
+          series: [chartData['ratio']]
+        });
+      });
+
+      ////////////////////////////////////////////////////////////////////////////////
+
+      //*******************************************
+      $('#dc-option, #bc-option, #cc-option, #ec-option').on('click', function(event) {
+        if ($('#centrality-stats').hasClass('hide')) {
+          $('#centrality-stats').removeClass('hide');
+        }
+        if (centralityType !== null) {
+          $('#ul-graph g.nodes circle.' + centralityType + '-' + 1).removeClass(centralityType + '-color-' + 1);
+          $('#ul-graph g.nodes circle.' + centralityType + '-' + 2).removeClass(centralityType + '-color-' + 2);
+          $('#ul-graph g.nodes circle.' + centralityType + '-' + 3).removeClass(centralityType + '-color-' + 3);
+          $('#ul-graph g.nodes circle.' + centralityType + '-' + 4).removeClass(centralityType + '-color-' + 4);
+          $('#' + centralityType + '-stats').addClass('hide');
+        }
+        centralityType = $(event.target).data('type');
+        $('#' + centralityType + '-stats').removeClass('hide');
+        $('#ul-graph g.nodes circle.' + centralityType + '-' + 1).addClass(centralityType + '-color-' + 1);
+        $('#ul-graph g.nodes circle.' + centralityType + '-' + 2).addClass(centralityType + '-color-' + 2);
+        $('#ul-graph g.nodes circle.' + centralityType + '-' + 3).addClass(centralityType + '-color-' + 3);
+        $('#ul-graph g.nodes circle.' + centralityType + '-' + 4).addClass(centralityType + '-color-' + 4);
+      });
+
+      ///////////////////////////////////////////////////////////////////////
+      
+      $('[name="model"]').on('click', function(event) {
+        var checkedClass = $('[name="model"]:checked').attr('class');
+        var uncheckedClass = $('[name="model"]:not(:checked)').attr('class');
+        $('.' + checkedClass + '[name!="model"]').attr('disabled', false);
+        $('.' + uncheckedClass + '[name!="model"]').attr('disabled', true);
+      });
+
+      $('[name="termination"]').on('click', function() {
+        var checkedClass = $('[name="termination"]:checked').attr('class');
+        var uncheckedClass = $('[name="termination"]:not(:checked)').attr('class');
+        $('.' + checkedClass + '[name!="termination"]').attr('disabled', false);
+        $('.' + uncheckedClass + '[name!="termination"]').attr('disabled', true);
+      });
+
+      $('[name="spatial-weights"]').on('click', function() {
+        var checkedClass = $('input[name="spatial-weights"]:checked').attr('class');
+        var uncheckedClass = $('input[name="spatial-weights"]:not(:checked)').attr('class');
+        $('.' + checkedClass + '[name!="spatial-weights"]').attr('disabled', false);
+        $('.' + uncheckedClass + '[name!="spatial-weights"]').attr('disabled', true);
+      });
+
+      $('.with-form').on('click', function(event) {
+        var anchor = $(event.target).data('ref');
+        $(anchor).siblings(':not([class~="hide"])').addClass('hide');
+        if ($(anchor).hasClass('hide')) {
+          $(anchor).removeClass('hide');
+        }
+      });
+
+      $('.ulr-model').on('click', function(event) {
+        if (!$('.ulr-options').hasClass('hide')) {
+          $('.ulr-options').addClass('hide');
+        }
+        var anchor = $(event.target).data('ref');
+        var modelType = $(event.target).val();
+        if (modelType === 'ltm') {
+          $('#ulr-config').prop('disabled', false);
+        } else {
+          $('#ulr-config').prop('disabled', true);
+        }
+        if ($(anchor).hasClass('hide')) {
+          $(anchor).removeClass('hide');
+        }
+      });
+
+      $('.ulr-icm-arg').on('click', function(event) {
+        var argsLimit = 2;
+        var checkedNum = $('.ulr-icm-arg:checked').length;
+        if (checkedNum < argsLimit) {
+          $('.ulr-icm-arg:disabled').prop('disabled', false);
+          $('#ulr-config').prop('disabled', true);
+        } else {
+          $('.ulr-icm-arg:not(:checked)').prop('disabled', true);
+          $('#ulr-config').prop('disabled', false);
+        }
+      });
+
+      $('#ulr-config').on('click', function(event) {
+        var formID = $(event.target).data('ref');
+        $(formID).siblings(':not([class~="hide"])').addClass('hide');
+        if ($(formID).hasClass('hide')) {
+          $(formID).removeClass('hide');
+        }
+        if (!$('#network-analyst').hasClass('disabled')) {
+          $('#network-analyst').addClass('disabled');
+        }
+        if (!$('#export-option').hasClass('disabled')) {
+          $('#export-option').addClass('disabled');
+        }
+        if (!$('#ul-vis').hasClass('hide')) {
+          $('#ul-vis').addClass('hide');
+        }
+        if ($('#ulr-vis').hasClass('hide')) {
+          $('#ulr-vis').removeClass('hide');
+        }
+        if (!$('#cl-vis').hasClass('hide')) {
+          $('#cl-vis').addClass('hide');
+        }
+        var modelAnchor = $('[name="models"]:checked').data('form');
+        var modelType = $('[name="models"]:checked').val();
+        $(modelAnchor).parent().siblings().children(':not([class~="hide"])').addClass('hide');
+        if ($(modelAnchor).hasClass('hide')) {
+          $(modelAnchor).removeClass('hide');
+        }
+        if (modelType === 'icm') {
+          var argRefs = $('.ulr-icm-arg').toArray().map(function(id) {
+            return $(id).data('ref');
+          });
+          var argsChecked = $('.ulr-icm-arg').toArray().map(function(id) {
+            return $(id).prop('checked');
+          });
+          ulrICMStates = argRefs.map(function(e, i) {
+            return [e, argsChecked[i]];
+          });
+          ulrICMStates.forEach(function(el) {
+            var currentID = el[0];
+            var currentState = el[1];
+            if ($(currentID).hasClass('hide')) {
+              $(currentID).removeClass('hide');
+            }
+            var defaultForm = $(currentID).find('.ulr-default');
+            var rangedForm = $(currentID).find('.ulr-ranged');
+            if (currentState) {
+              if (!defaultForm.hasClass('hide')) {
+                defaultForm.addClass('hide');
+              }
+              if (rangedForm.hasClass('hide')) {
+                rangedForm.removeClass('hide');
+              }
+            } else {
+              if (defaultForm.hasClass('hide')) {
+                defaultForm.removeClass('hide');
+              }
+              if (!rangedForm.hasClass('hide')) {
+                rangedForm.addClass('hide');
+              }
+            }
+          });
+        }
+      });
+
+      $('#clear-weights').on('click', function(event) {
+      	$('.urgency-values').empty();
+        if (!$('#param-table').hasClass('hide')) {
+          $('#param-table').addClass('hide');
+        }
+      });
+
+      $('#slot-weights').on('click', function(event) {
+        $('.urgency-values').empty();
+      	var checkedOption = $('input[name="termination"]:checked').val();
+      	var children = null;
+      	if (checkedOption === 'step') {
+      		children = generateRows(parseInt($('#step-num').val()), null);
+      	} else {
+      		children = generateRows(1, null);
+      	}
+      	$('.urgency-values').append(children);
+        if ($('#param-table').hasClass('hide')) {
+          $('#param-table').removeClass('hide');
+        }
+      });
+
+      $('#set-weights').on('click', function(event) {
+        $('.urgency-values').empty();
+      	var checkedOption = $('input[name="termination"]:checked').val();
+      	var urgencyVal = $('#fixed-weight').val();
+      	var children = null;
+      	if (checkedOption === 'step') {
+      		children = generateRows(parseInt($('#step-num').val()), urgencyVal);
+      	} else {
+      		children = generateRows(1, urgencyVal);
+      	}
+      	$('.urgency-values').append(children);
+        if ($('#param-table').hasClass('hide')) {
+          $('#param-table').removeClass('hide');
+        }
+      });
+
+      $('#sw-option, #pa-option, #rnd-option, #user-level').on('click', function(event) {
+        if ($('#network-analyst').hasClass('disabled')) {
+          $('#network-analyst').removeClass('disabled');
+        }
+        if ($('#ul-vis').hasClass('hide')) {
+          $('#ul-vis').removeClass('hide');
+        }
+        if (!$('#ulr-vis').hasClass('hide')) {
+          $('#ulr-vis').addClass('hide');
+        }
+        if (!$('#cl-vis').hasClass('hide')) {
+          $('#cl-vis').addClass('hide');
+        }
+      });
+      
+      $('#city-level').on('click', function(event) {
+        if (!$('#network-analyst').hasClass('disabled')) {
+          $('#network-analyst').addClass('disabled');
+        }
+        if (!$('#export-option').hasClass('disabled')) {
+          $('#export-option').addClass('disabled');
+        }
+        if (!$('#ul-vis').hasClass('hide')) {
+          $('#ul-vis').addClass('hide');
+        }
+        if (!$('#ulr-vis').hasClass('hide')) {
+          $('#ulr-vis').addClass('hide');
+        }
+        if ($('#cl-vis').hasClass('hide')) {
+          $('#cl-vis').removeClass('hide');
+        }
+      });      
+      
+      ///////////////////////////////////////////////////////////////////////////////
+      
+      $('#small-world').on('click', swHandler);
+
+      $('#pref-attach').on('click', paHandler);
+
+      $('#random').on('click', rndHandler);
+
+      $('#community').on('click', commHandler);
+      
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      $('#get-seeds').on('click', seedHandler);
+
+      $('#get-opinion-leaders').on('click', opldHandler);
+
+      $('#diffuse-ul').on('click', ulHandler);
+
+      ////////////////////////////////////////////////////////////////////////////////
+      
+      $('#map-layers').on('change', function(event) {
+        fileSet['map-layers'] = event.target.files;
+      });
+
+      $('#weight-matrix').on('change', function(event) {
+        fileSet['weights'] = event.target.files;
+      });  
+
+      $('#net-file').on('change', function(event) {
+        fileSet['network'] = event.target.files;
+      });  
+      
+      $('#upload-layers').on('click', basemapHandler);
+
+      $('#upload-net').on('click', netFileHandler);
+
+      $('#upload-weight').on('click', weightFileHandler);
+      
+      $('#diffuse-cl').on('click', clHandler);
+
+      $('#ulr-ltm-run').on('click', function(event) {
+        var minSeeds = parseInt($('#ulr-ltm-seed-min').val());
+        var maxSeeds = parseInt($('#ulr-ltm-seed-max').val());
+        var seedRangeNum = parseInt($('#ulr-ltm-seed-range-num').val());
+        var seedAlg = $('#ulr-ltm-indicator').val();
+        var minThres = parseFloat($('#ulr-ltm-threshold-min').val());
+        var maxThres = parseFloat($('#ulr-ltm-threshold-max').val());
+        var thresRangeNum = parseInt($('#ulr-ltm-threshold-range-num').val());
+        var ltmData = {
+          minSeeds: minSeeds,
+          maxSeeds: maxSeeds,
+          seedRangeNum: seedRangeNum,
+          seedAlg: seedAlg,
+          minThres: minThres,
+          maxThres: maxThres,
+          thresRangeNum: thresRangeNum
+        };
+        
+        $.ajax({
+          url: '/diffusion-ulr/ltm',
+          type:'GET',
+          cache: false,
+          data: ltmData,
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var ulrResults = JSON.parse(data);
+          var ulrInfo = ulrResults['info'];
+          var ulrData = ulrResults['data']
+          $('#ulr-graph').empty();
+          var chart = new Highcharts.Chart({
+            chart: {
+              renderTo: 'ulr-graph',
+              margin: 100,
+              type: 'scatter3d',
+              animation: false,
+              options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 30,
+                depth: 250,
+                viewDistance: 5,
+                fitToPlot: false,
+                frame: {
+                  bottom: { size: 1, color: 'rgba(0,0,0,0.02)' },
+                  back: { size: 1, color: 'rgba(0,0,0,0.04)' },
+                  side: { size: 1, color: 'rgba(0,0,0,0.06)' }
+                }
+              }
+            },
+            title: {
+              text: 'Linear Threshold Model Results'
+            },
+            subtitle: {
+              text: 'X Axis: ' + ulrInfo['x-field'] + ', ' + 'Y Axis: ' + ulrInfo['y-field']
+            },
+            plotOptions: {
+              scatter: {
+                width: 10,
+                height: 10,
+                depth: 10
+              }
+            },
+            xAxis: {
+              min: ulrInfo['x']['min'],
+              max: ulrInfo['x']['max'],
+              title: {
+                text: 'X'
+              }
+            },
+            yAxis: {
+              min: ulrInfo['y']['min'],
+              max: ulrInfo['y']['max'],
+              title: {
+                text: 'Y'
+              }
+            },
+            zAxis: {
+              min: 0.0,
+              max: 1.0,
+              title: {
+                text: 'Z'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            series: [{
+              name: 'Coverage',
+              colorByPoint: true,
+              data: ulrData
+            }]
+          });
+
+
+          // Add mouse and touch events for rotation
+          (function (H) {
+            function dragStart(eStart) {
+              eStart = chart.pointer.normalize(eStart);
+
+              var posX = eStart.chartX,
+                posY = eStart.chartY,
+                alpha = chart.options.chart.options3d.alpha,
+                beta = chart.options.chart.options3d.beta,
+                sensitivity = 5,  // lower is more sensitive
+                handlers = [];
+
+              function drag(e) {
+                // Get e.chartX and e.chartY
+                e = chart.pointer.normalize(e);
+
+                chart.update({
+                  chart: {
+                    options3d: {
+                      alpha: alpha + (e.chartY - posY) / sensitivity,
+                      beta: beta + (posX - e.chartX) / sensitivity
+                    }
+                  }
+                }, undefined, undefined, false);
+              }
+
+              function unbindAll() {
+                handlers.forEach(function (unbind) {
+                  if (unbind) {
+                    unbind();
+                  }
+                });
+                handlers.length = 0;
+              }
+
+              handlers.push(H.addEvent(document, 'mousemove', drag));
+              handlers.push(H.addEvent(document, 'touchmove', drag));
+
+
+              handlers.push(H.addEvent(document, 'mouseup', unbindAll));
+              handlers.push(H.addEvent(document, 'touchend', unbindAll));
+            }
+            H.addEvent(chart.container, 'mousedown', dragStart);
+            H.addEvent(chart.container, 'touchstart', dragStart);
+          }(Highcharts));
+          
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      });
+
+      $('#ulr-icm-run').on('click', function(event) {
+        var icmEls = ulrICMStates.map(function(el) {
+          var currentID = el[0];
+          var currentState = el[1];
+          var dataKey = $(currentID).data('key');
+          var vals = null;
+          if (currentState) {
+            var rangedIDPrefix = $(currentID).data('ranged');
+            var valMin = parseFloat($(rangedIDPrefix + '-min').val());
+            var valMax = parseFloat($(rangedIDPrefix + '-max').val());
+            var intervalNum = parseInt($(rangedIDPrefix + '-range-num').val());
+            vals = {min: valMin, max: valMax, rn: intervalNum};
+          } else {
+            var defaultID = $(currentID).data('default');
+            vals = parseFloat($(defaultID).val());
+          }
+          var el = {};
+          el[dataKey] = vals;
+          return el;
+        });
+        icmEls.push({alg: $('#ulr-icm-indicator').val()});
+        icmEls.push({scale: $('.ulr-icm:checked').val()});
+        
+        var icmData = {};
+        for (var el of icmEls ) {
+          icmData = Object.assign(icmData, el);
+        }
+        
+        $.ajax({
+          url: '/diffusion-ulr/icm',
+          type:'GET',
+          cache: false,
+          data: {data: JSON.stringify(icmData)},
+        }).done(function(data, status, xhr) {
+          console.log(status);  
+          console.log(data);
+          var ulrResults = JSON.parse(data);
+          var ulrInfo = ulrResults['info'];
+          var ulrData = ulrResults['data']
+          $('#ulr-graph').empty();
+          var chart = new Highcharts.Chart({
+            chart: {
+              renderTo: 'ulr-graph',
+              margin: 100,
+              type: 'scatter3d',
+              animation: false,
+              options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 30,
+                depth: 250,
+                viewDistance: 5,
+                fitToPlot: false,
+                frame: {
+                  bottom: { size: 1, color: 'rgba(0,0,0,0.02)' },
+                  back: { size: 1, color: 'rgba(0,0,0,0.04)' },
+                  side: { size: 1, color: 'rgba(0,0,0,0.06)' }
+                }
+              }
+            },
+            title: {
+              text: 'Independent Cascade Model Results'
+            },
+            subtitle: {
+              text: 'X Axis: ' + ulrInfo['x-field'] + ', ' + 'Y Axis: ' + ulrInfo['y-field']
+            },
+            plotOptions: {
+              scatter: {
+                width: 10,
+                height: 10,
+                depth: 10
+              }
+            },
+            xAxis: {
+              min: ulrInfo['x']['min'],
+              max: ulrInfo['x']['max'],
+              title: {
+                text: 'X'
+              }
+            },
+            yAxis: {
+              min: ulrInfo['y']['min'],
+              max: ulrInfo['y']['max'],
+              title: {
+                text: 'Y'
+              }
+            },
+            zAxis: {
+              min: 0.0,
+              max: 1.0,
+              title: {
+                text: 'Z'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            series: [{
+              name: 'Coverage',
+              colorByPoint: true,
+              data: ulrData
+            }]
+          });
+
+
+          // Add mouse and touch events for rotation
+          (function (H) {
+            function dragStart(eStart) {
+              eStart = chart.pointer.normalize(eStart);
+
+              var posX = eStart.chartX,
+                posY = eStart.chartY,
+                alpha = chart.options.chart.options3d.alpha,
+                beta = chart.options.chart.options3d.beta,
+                sensitivity = 5,  // lower is more sensitive
+                handlers = [];
+
+              function drag(e) {
+                // Get e.chartX and e.chartY
+                e = chart.pointer.normalize(e);
+
+                chart.update({
+                  chart: {
+                    options3d: {
+                      alpha: alpha + (e.chartY - posY) / sensitivity,
+                      beta: beta + (posX - e.chartX) / sensitivity
+                    }
+                  }
+                }, undefined, undefined, false);
+              }
+
+              function unbindAll() {
+                handlers.forEach(function (unbind) {
+                  if (unbind) {
+                    unbind();
+                  }
+                });
+                handlers.length = 0;
+              }
+
+              handlers.push(H.addEvent(document, 'mousemove', drag));
+              handlers.push(H.addEvent(document, 'touchmove', drag));
+
+
+              handlers.push(H.addEvent(document, 'mouseup', unbindAll));
+              handlers.push(H.addEvent(document, 'touchend', unbindAll));
+            }
+            H.addEvent(chart.container, 'mousedown', dragStart);
+            H.addEvent(chart.container, 'touchstart', dragStart);
+          }(Highcharts));
+
+        }).fail(function(xhr, status, error) {
+          console.error(status);
+          console.error(error);
+        });
+      });
+    </script>
+  </body>
 </html>
