@@ -8,7 +8,6 @@ import zipfile
 import io
 from datetime import datetime, timedelta
 from flask import Flask
-<<<<<<< HEAD
 from flask import send_from_directory, send_file
 from flask import request, make_response
 from pymongo import MongoClient
@@ -17,29 +16,10 @@ import transform
 import networks as n
 import diffusion as d
 import utils as u
-=======
-from flask import send_from_directory
-from flask import request
-from pymongo import MongoClient
-import importlib
-import networkx as nx 
-import difsim 
-import graph
-import datatransfer
-import snap
-import seeds
-import community
-import linearthreshold
-import cascade
-import geo
-
-
->>>>>>> af1d0cb745fc0c34836e51aff6bd6956d35e26a0
 
 
 def create_app(test_config=None):
     # create and configure the app
-<<<<<<< HEAD
     UPLOAD_FOLDER = './upload/'
     DOWNLOAD_FOLDER = './download/'
     COOKIE_KEY = 'user-id'
@@ -54,25 +34,6 @@ def create_app(test_config=None):
 
     client = MongoClient('mongodb://localhost:27017/')
     user_records = client['network']['user_records']
-=======
-
-    UPLOAD_FOLDER = './city-diffusion/'
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.mkdir(UPLOAD_FOLDER)
-    ALLOWED_EXTENSIONS = set(['txt', 'xml', 'json', 'dbf', 'shp', 'prj', 'shx', 'sbn', 'sbx'])
-
-    app = Flask(__name__, instance_relative_config=True)
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
-    client = MongoClient('localhost',27017)
-    db = client['network']
-    shapefile = db['shapefile']
-    citynetwork = db['citynetwork']
-    weightmatrix = db['weightmatrix']
->>>>>>> af1d0cb745fc0c34836e51aff6bd6956d35e26a0
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -83,12 +44,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
-
-
-    def allowed_file(filename):
-        return '.' in filename and \
-        filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
     def update_modification_time(user_id):
         flag = user_records.update_one({
@@ -137,7 +92,6 @@ def create_app(test_config=None):
     # Index Page
     @app.route('/')
     def index():
-<<<<<<< HEAD
         cookie_val = assign_cookie_value(request, COOKIE_KEY)
         print request.cookies
         response = make_response(send_from_directory('templates', 'base.html'), 200)
@@ -519,114 +473,11 @@ def create_app(test_config=None):
             files = dict(raw_data)
             current_dir = os.path.join(UPLOAD_FOLDER, user_id + '/')
             os.mkdir(current_dir)
-=======
-        return send_from_directory('templates', 'base.html')
-    
-    @app.route('/smallworld', methods=['POST'])
-    def smallworld():
-        if request.method == 'POST':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            nodes = int(data['nodes'])
-            outdegree = int(data['outdegree'])
-            rewirepb = float(data['rewirepb'])
-            
-            s1 = graph.samllworld_gnm(nodes, outdegree, rewirepb)
-            #datatransfer.datatransfer(s1)
-            #print(s1)
-            return json.dumps(datatransfer.datatransfer(s1))
-    
-    @app.route('/PrefAttach', methods=['POST'])
-    def prefattach():
-        if request.method == 'POST':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            nodes = int(data['nodes'])
-            outdegree = int(data['outdegree'])
-            
-            s1 = graph.prefattach_gnm(nodes, outdegree)
-            #datatransfer.datatransfer(s1)
-            return json.dumps(datatransfer.datatransfer(s1))
-
-    @app.route('/Random', methods=['POST'])
-    def rand():
-        if request.method == 'POST':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            nodes = int(data['nodes'])
-            edges = int(data['edges'])
-            
-            s1 = graph.rnd_gnm(snap.PNGraph,nodes, edges)
-            #datatransfer.datatransfer(s1)
-            return json.dumps(datatransfer.datatransfer(s1))
-    
-    @app.route('/seednodes', methods=['PUT'])
-    def seednodes():
-        if request.method == 'PUT':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            seednodes = int(data['seednodes'])
-            algorithm = data['algorithm']
-            
-            s1 = graph.samllworld_gnm(100, 5, .15)
-            seed_nodes = seeds.seeds(s1,seednodes,algorithm)
-            #--datatransfer.datatransfer(s1,seed_nodes)
-            results = datatransfer.datatransfer(s1,seed_nodes,[])
-            return json.dumps(results)
-
-    @app.route('/comm', methods=['PUT'])
-    def comm():
-        if request.method == 'PUT':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            opin = float(data['pro_opinion'])
-            search_type = data['search_type']
-            s1 = graph.samllworld_gnm(100, 5, .15)
-            if search_type=="eachcommunity":
-                results = datatransfer.datatransfer(s1,[],community.find_opinionleaders(community.communityCNM(s1),opin))
-            else:
-                results = datatransfer.datatransfer(s1,[],seeds.rnd(100,int(100*opin)))
-            return json.dumps(results)
-
-    @app.route('/diff', methods=['PUT'])
-    def diff():
-        if request.method == 'PUT':
-            raw_data = request.form
-            data = json.loads(json.dumps(raw_data))
-            s1 = graph.samllworld_gnm(100, 5, .15)
-            model_type = data['model_type']
-            if model_type == 'LTM':
-                seednodes = int(data['seednodes'])
-                algorithm = data['algorithm']
-                thre = float(data['threshold'])  
-                seed_nodes = seeds.seeds(s1,seednodes,algorithm)
-                results = datatransfer.datatransfer(s1,linearthreshold.linear(s1,seed_nodes,thre),[])
-            elif model_type == 'ICM':
-                seednodes = int(data['seednodes'])
-                algorithm = data['algorithm']
-                pbopinion = float(data['pbopinion'])
-                pbnormal = float(data['pbnormal'])
-                opinleader = data['opinleader']
-                pbopinleader = float(data['pbobinleader']) 
-                seed_nodes = seeds.seeds(s1,seednodes,algorithm)
-            #cascade.cascade(s1,seednodes,pbopinion,pbnormal,opinleader,pbopinleader)
-                results = datatransfer.datatransfer(s1,cascade.cascade(s1,seed_nodes,pbopinion,pbnormal,opinleader,pbopinleader),community.find_opinionleaders(community.communityCNM(s1),pbopinleader))
-            #--datatransfer.datatransfer(s1,seed_nodes)
-            
-            return json.dumps(results)
-
-    @app.route('/MapFileInput', methods=['POST'])
-    def MapFileInput():
-        if request.method == 'POST':
-            raw_data = request.files
-            files = dict(raw_data)
->>>>>>> af1d0cb745fc0c34836e51aff6bd6956d35e26a0
             for f in files.values():
                 name = f[0].filename
                 content = f[0].read()
                 if re.search('(.)+.shp$', name): 
                     shapefile_name = name
-<<<<<<< HEAD
                 with open(os.path.join(current_dir, name), 'wb') as local_f:
                     local_f.write(content)
             p = os.path.join(current_dir, shapefile_name)
@@ -791,42 +642,6 @@ def create_app(test_config=None):
 
         with open(os.path.join(current_dir, 'net.txt'), 'w') as f:
             f.write(all_lines)
-=======
-                local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
-                local_f.write(content)
-                local_f.close()
-            geojson = geo.shp2geojson(os.path.join(UPLOAD_FOLDER, shapefile_name))
-            return geojson
-
-    @app.route('/LoadNetFile', methods=['POST'])
-    def LoadNetFile():
-        if request.method == 'POST':
-            raw_data = request.files
-            files = dict(raw_data)
-            f = files.values()[0][0]
-            name = f.filename
-            content = f.read()
-            local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
-            local_f.write(content)
-            local_f.close()
-            point, line = geo.getNetwork(os.path.join(UPLOAD_FOLDER, name))
-            return json.dumps({'point': point, 'line': line})
-
-    @app.route('/LoadWeight', methods=['POST'])
-    def LoadWeight ():
-        if request.method == 'POST':
-            raw_data = request.files
-            files = dict(raw_data)
-            f = files.values()[0][0]
-            name = f.filename
-            content = f.read()
-            local_f = open(os.path.join(UPLOAD_FOLDER, name), 'w')
-            local_f.write(content)
-            local_f.close()
-            matrix = geo.getWeightMatrix(os.path.join(UPLOAD_FOLDER, name))
-            return json.dumps(matrix)
-       
->>>>>>> af1d0cb745fc0c34836e51aff6bd6956d35e26a0
         
         file_paths = []
         for root, _, files in os.walk(current_dir): 
