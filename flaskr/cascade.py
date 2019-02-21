@@ -14,7 +14,6 @@ def cascade(net, seednodes, pbopinion, pbnormal, opinleader, pbopinleader):
     
     
     nbrs_nodes = set([])
-    #buv = {}
     
     '''for node in seednodes:
         #seednbrs_nodes = set([v for v in net.GetNI(node).GetOutEdges() if v not in seednodes] )
@@ -24,7 +23,6 @@ def cascade(net, seednodes, pbopinion, pbnormal, opinleader, pbopinleader):
     print(seednodes)
     while len(seednodes) > 0:
         seednbrs_nodes = set([v for node in seednodes for v in net.GetNI(node).GetOutEdges() if v not in hist_seeds] )
-        print(seednbrs_nodes)
         pbnbrs = {n: random.uniform(0,1) for n in seednbrs_nodes}
         new_seeds = set()
         for k, v in pbnbrs.items():
@@ -37,15 +35,14 @@ def cascade(net, seednodes, pbopinion, pbnormal, opinleader, pbopinleader):
         seednodes = list(new_seeds)
         print(seednodes)
     print(hist_seeds)
+    return hist_seeds
 
 
 
 
         
-    
-g1= graph.rnd_gnm(sp.PUNGraph,20,60)
-    #seednodes=[1,3]
-cascade(g1, [1,12,5,9], 0.4, 0.3, "Each Network", 0.2 )
-           
-        #pbnode = random.uniform(0,1)
+if __name__ == '__main__':
+    g1= graph.rnd_gnm(sp.PUNGraph,20,60)
+    print(cascade(g1, [1,12,5,9], 0.4, 0.3, "Each Network", 0.2 ))
+
        

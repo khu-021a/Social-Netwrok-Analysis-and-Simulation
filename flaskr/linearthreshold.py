@@ -28,7 +28,7 @@ def linear(net, seednodes, threshold):
             nbrs_nodes = nbrs_nodes | set(new_nbrs)
         print(seednodes)
         print(nbrs_nodes)
-
+    return seednodes
 
     """while True:
         toact_nodes = set ([v for x in seednodes for v in net.GetNI(x).GetOutEdges() if v not in seednodes])
@@ -49,9 +49,9 @@ def linear(net, seednodes, threshold):
 
         
     
-g1= graph.rnd_gnm(sp.PUNGraph,5,2)
+#g1= graph.rnd_gnm(sp.PUNGraph,5,2)
     #seednodes=[1,3]
-linear(g1, [1,2], 0.4 )
+#linear(g1, [1,2], 0.4 )
            
         #pbnode = random.uniform(0,1)
        
