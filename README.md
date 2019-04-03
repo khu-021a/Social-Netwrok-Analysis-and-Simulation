@@ -25,12 +25,13 @@ This repository is the online version of network analyst and simulator from the 
 
 ## Prerequisites
 
-* [Python 2.7.x]()
-* [NumPy]()
-* [Flask]()
-* [MongoDB 3.6+]()
-* [PyMongo]()
-* [SNAP]()
+* [Python 2.7.x](https://www.python.org/)
+* [NumPy](http://www.numpy.org/)
+* [Flask](http://flask.pocoo.org/)
+* [MongoDB 3.6+](https://www.mongodb.com/)
+* [PyMongo](http://api.mongodb.com/python/3.7.2/)
+* [SNAP](http://snap.stanford.edu/)
+* [PyShp](https://pypi.org/project/pyshp/)
 
 ## Quick Start
 
