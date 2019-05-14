@@ -7,9 +7,9 @@
     
     <!-- Bootstrap CSS and JS-->
     <title>Social Network Analysis and Simulation</title>
-    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/fg.css">
-    <link rel="stylesheet" href="/static/css/geo.css">
+    <link rel="stylesheet" href="/assets/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/fg.css">
+    <link rel="stylesheet" href="/assets/css/geo.css">
     
     <title></title>
     <style>
@@ -380,18 +380,15 @@
               <div class="form-row form-el-left">
                 <div class="form-col"><input type="radio" name="model" class="icm" id="icm-option" value="ICM"><label for="icm-option">Independent Cascade Model</label></div>
               </div>
-              <div class="form-row">
-                <div class="form-col"><h6 class="center">Opinion Leader</h6></div>
-              </div>
               <div class="form-row form-els-center">
-                <div class="form-col"><label class="network-label" for="">Network Coverage: </label></div>
+                <div class="form-col"><label class="network-label" for="">Opinion Leader Scale: </label></div>
                 <div class="form-col">
                   <div class="form-check"><input type="radio" name="scale" value="G" class="icm" id="global" checked required disabled><label for="global">Whole Network</label></div>
                   <div class="form-check"><input type="radio" name="scale" value="R" class="icm" id="regional" required disabled><label for="regional">Each Community</label></div>
                 </div>
               </div>
               <div class="form-row">
-                <div class="form-col"><label class="network-label" for="proportion">Proportion: </label></div>
+                <div class="form-col"><label class="network-label" for="proportion">Opinion Leader Proportion: </label></div>
                 <div class="form-col"><input type="number" id="proportion" class="icm param-input" name="ratio" min="0" max="1" step="1e-8" placeholder="Proportion" required disabled></div>
               </div>
               <div class="form-row">
@@ -400,14 +397,11 @@
                 </div>
               </div>
               <div class="form-row">
-                <div class="form-col"><h6 class="center">Diffuse Probability</h6></div>
-              </div>
-              <div class="form-row">
-                <div class="form-col"><label class="network-label" for="pb-opinion-leaders">Opinion Leader: </label></div>
+                <div class="form-col"><label class="network-label" for="pb-opinion-leaders">Diffuse Probability (Opinion Leader): </label></div>
                 <div class="form-col"><input type="number" id="pb-opinion-leaders" class="icm param-input" name="icm-param-o" min="0" max="1" step="1e-8" placeholder="Leader Probability" required disabled></div>
               </div>
               <div class="form-row">
-                <div class="form-col"><label class="network-label" for="pb-normal-people">Normal: </label></div>
+                <div class="form-col"><label class="network-label" for="pb-normal-people">Diffuse Probability (Normal): </label></div>
                 <div class="form-col"><input type="number" id="pb-normal-people" class="icm param-input" name="icm-param-n" min="0" max="1" step="1e-8" placeholder="Normal Probability" required disabled></div>
               </div>
               <div class="form-row">
@@ -422,18 +416,15 @@
                   <div class="form-col"><h5>Linear Threshold Model</h5></div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><h6>Seed Node</h6></div>
-                </div>
-                <div class="form-row">
-                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-min">Min Seed Node #: </label></div>
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-min">Min Seed Number: </label></div>
                   <div class="form-col"><input type="number" id="ulr-ltm-seed-min" class="param-input" name="ltm-node-min" min="1" placeholder="Min Seed Number" required></div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-max">Max Seed Node #: </label></div>
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-max">Max Seed Number: </label></div>
                   <div class="form-col"><input type="number" id="ulr-ltm-seed-max" class="param-input" name="ltm-node-max" min="1" placeholder="Max Seed Number" required></div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-range-num">Seed Node Range #: </label></div>
+                  <div class="form-col"><label class="network-label" for="ulr-ltm-seed-range-num">Seed Range Number: </label></div>
                   <div class="form-col"><input type="number" id="ulr-ltm-seed-range-num" class="param-input" name="ltm-seed-range-num" min="1" placeholder="Seed Range Number" required></div>
                 </div>
                 <div class="form-row">
@@ -449,9 +440,6 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><h6>Threshold</h6></div>
-                </div>
-                <div class="form-row">
                   <div class="form-col"><label class="network-label" for="ulr-ltm-threshold-min">Min Threshold: </label></div>
                   <div class="form-col"><input type="number" id="ulr-ltm-threshold-min" class="param-input" name="ltm-threshold-min" min="0" max="1" step="1e-8" placeholder="Min Threshold" required></div>
                 </div>
@@ -460,7 +448,7 @@
                   <div class="form-col"><input type="number" id="ulr-ltm-threshold-max" class="param-input" name="ltm-threshold-max" min="0" max="1" step="1e-8" placeholder="Max Threshold" required></div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><label class="network-label" for="ulr-threshold-range-num">Threshold Range #: </label></div>
+                  <div class="form-col"><label class="network-label" for="ulr-threshold-range-num">Threshold Range Number: </label></div>
                   <div class="form-col"><input type="number" id="ulr-ltm-threshold-range-num" class="param-input" name="ltm-threshold-range-num" min="1" placeholder="Threshold Range Number" required></div>
                 </div>
                 <div class="form-row">
@@ -473,9 +461,6 @@
                 <div class="form-row">
                   <div class="form-col"><h5>Independent Cascade Model</h5></div>
                 </div>
-                <div class="form-row">
-                  <div class="form-col"><h6>Seed Node</h6></div>
-                </div>
                 <div id="ulr-icm-seeds" data-key="seeds" data-default="#ulr-icm-seed-num" data-ranged="#ulr-icm-seed">
                   <div class="ulr-default">
                     <div class="form-row">
@@ -485,15 +470,15 @@
                   </div>
                   <div class="ulr-ranged">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-min">Min Seed Node #: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-min">Min Seed Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-seed-min" class="param-input" name="ulr-icm-node-min" min="1" placeholder="Min Seed Number" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-max">Max Seed Node #: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-max">Max Seed Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-seed-max" class="param-input" name="ulr-icm-node-max" min="1" placeholder="Max Seed Number" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-range-num">Seed Node Range #: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-seed-range-num">Seed Range Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-seed-range-num" class="param-input" name="ulr-icm-seed-range-num" min="1" placeholder="Seed Range Number" required></div>
                     </div>
                   </div>
@@ -511,10 +496,7 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="form-col"><h6>Opinion Leader</h6></div>
-                </div>
-                <div class="form-row">
-                  <div class="form-col"><label class="network-label" for="">Network Coverage: </label></div>
+                  <div class="form-col"><label class="network-label" for="">Opinion Leader Scale: </label></div>
                   <div class="form-col">
                     <div class="form-check"><input type="radio" name="ulr-icm-scale" value="G" class="ulr-icm" id="ulr-icm-global" checked required><label for="ulr-icm-global">Whole Network</label></div>
                     <div class="form-check"><input type="radio" name="ulr-icm-scale" value="R" class="ulr-icm" id="ulr-icm-regional" required><label for="ulr-icm-regional">Each Community</label></div>
@@ -523,46 +505,43 @@
                 <div id="ulr-icm-ratio" data-key="op-ratio" data-default="#ulr-icm-proportion" data-ranged="#ulr-icm-proportion">
                   <div class="ulr-default">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion">Proportion: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion">Opinion Leader Proportion: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-proportion" class="param-input" name="ulr-icm-ratio" min="0" max="1" step="1e-8" placeholder="Proportion" required></div>
                     </div>
                   </div>
                   <div class="ulr-ranged">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-min">Min Proportion: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-min">Min Opinion Leader Proportion: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-proportion-min" class="param-input" name="ulr-icm-ratio-min" min="0" max="1" step="1e-8" placeholder="Min Proportion" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-max">Max Proportion: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-max">Max Opinion Leader Proportion: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-proportion-max" class="param-input" name="ulr-icm-ratio-max" min="0" max="1" step="1e-8" placeholder="Max Proportion" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-range-num">Proportion Range #: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-proportion-range-num">Proportion Range Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-proportion-range-num" class="param-input" name="ulr-icm-ratio-range-num" min="1" placeholder="Proportion Range Number" required></div>
                     </div>
                   </div>
                 </div>
-                <div class="form-row">
-                  <div class="form-col"><h6>Diffuse Probability</h6></div>
-                </div>
                 <div id="ulr-icm-opl-prob" data-key="op-prob" data-default="#ulr-icm-pb-opinion-leaders" data-ranged="#ulr-icm-pb-opinion-leaders">
                   <div class="ulr-default">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders">For Opinion Leader: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders">Diffuse Probability (Opinion Leader): </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders" class="param-input" name="ulr-icm-icm-param-o" min="0" max="1" step="1e-8" placeholder="Leader Probability" required></div>
                     </div>
                   </div>
                   <div class="ulr-ranged">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-min">Min for Opinion Leader: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-min">Min Opinion Leader Probability: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-min" class="param-input" name="ulr-icm-icm-param-o-min" min="0" max="1" step="1e-8" placeholder="Min Leader Probability" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-max">Max for Opinion Leader: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-max">Max Opinion Leader Probability: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-max" class="param-input" name="ulr-icm-icm-param-o-max" min="0" max="1" step="1e-8" placeholder="Max Leader Probability" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-range-num">Range # for Opinion Leader: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-opinion-leaders-range-num">OP Probability Range Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-opinion-leaders-range-num" class="param-input" name="ulr-icm-icm-param-o-range-num" min="1" placeholder="Leader Probability Range Number" required></div>
                     </div>
                   </div>
@@ -570,21 +549,21 @@
                 <div id="ulr-icm-normal-prob" data-key="n-prob" data-default="#ulr-icm-pb-normal-people" data-ranged="#ulr-icm-pb-normal-people">
                   <div class="ulr-default">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people">For Normal: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people">Diffuse Probability (Normal): </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people" class="param-input" name="icm-param-n" min="0" max="1" step="1e-8" placeholder="Normal Probability" required></div>
                     </div>
                   </div>
                   <div class="ulr-ranged">
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-min">Min for Normal: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-min">Min Normal Probability: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-min" class="param-input" name="icm-param-n-min" min="0" max="1" step="1e-8" placeholder="Min Normal Probability" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-max">Max for Normal: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-max">Max Normal Probability: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-max" class="param-input" name="icm-param-n-max" min="0" max="1" step="1e-8" placeholder="Max Normal Probability" required></div>
                     </div>
                     <div class="form-row">
-                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-range-num">Range # for Normal: </label></div>
+                      <div class="form-col"><label class="network-label" for="ulr-icm-pb-normal-people-range-num">Normal Probability Range Number: </label></div>
                       <div class="form-col"><input type="number" id="ulr-icm-pb-normal-people-range-num" class="param-input" name="icm-param-n-range-num" min="1" placeholder="Normal Probability Range Number" required></div>
                     </div>
                   </div>
@@ -672,7 +651,7 @@
                 </div>
               </div>
               <div class="form-row">
-                <div class="form-col"><h5>Public Attention Level</h5></div>
+                <div class="form-col"><h5>Public Attention Labels</h5></div>
               </div>
               <div class="form-row">
                 <div class="form-col">
@@ -683,7 +662,7 @@
               </div>
               <div class="form-row">
                 <div class="form-col">
-                  <label for="fixed-weight">Constant temporal weight</label>
+                  <label for="fixed-weight">Fixed temporal weight</label>
                   <input type="number" id="fixed-weight" class="param-input" min="0" max="1" step="1e-8" placeholder="Temporal Weight">
                 </div>
               </div>
@@ -709,15 +688,15 @@
               </div>
               <div class="form-row form-els-center">
                 <div class="form-col">
-                  <input type="radio" name="spatial-weights" value="G" class="fixed" id="spatial-fixed" checked required><label for="spatial-fixed">Constant</label>
+                  <input type="radio" name="spatial-weights" value="G" class="fixed" id="spatial-fixed" checked required><label for="spatial-fixed">Fixed</label>
                 </div>
                 <div class="form-col">
-                  <input type="radio" name="spatial-weights" value="R" class="decaying" id="spatial-decaying" required><label for="spatial-decaying">Decaying</label>
+                  <input type="radio" name="spatial-weights" value="R" class="decaying" id="spatial-decaying" required><label for="spatial-decaying">Decay</label>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-col">
-                  <label for="decay-radius" class="network-label">Decay Radius (mi): </label>
+                  <label for="decay-radius" class="network-label">Decay radius (mi): </label>
                 </div>
                 <div class="form-col">
                   <input type="number" id="decay-radius" class="decaying param-input" name="decay-radius" min="0" step="1e-8" placeholder="Decay Radius" required disabled>
@@ -725,7 +704,7 @@
               </div>
               <div class="form-row">
                 <div class="form-col">
-                  <label for="decay-ratio" class="network-label">Decay Ratio: </label>
+                  <label for="decay-ratio" class="network-label">Decay ratio: </label>
                 </div>
                 <div class="form-col">
                   <input type="number" id="decay-ratio" class="decaying param-input" name="decay-ratio" min="0" max="1" step="1e-8" placeholder="Decay Ratio" required disabled>
@@ -834,15 +813,15 @@
       </div>
     </div>
   
-    <script src="/static/libs/jquery-3.3.1.min.js" ></script>
-    <script src="/static/libs/popper.min.js"></script>
-    <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/libs/d3.min.js" charset="utf-8"></script>
-    <script src="/static/libs/highcharts/code/highcharts.js"></script>
-    <script src="/static/libs/highcharts/code/highcharts-3d.js"></script>
-    <script src="/static/js/fg.js"></script>
-    <script src="/static/js/geo.js"></script>
-    <script src="/static/js/handlers.js"></script>
-    <script src="/static/js/main.js"></script>
+    <script src="/assets/libs/jquery-3.3.1.min.js" ></script>
+    <script src="/assets/libs/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/libs/d3.min.js" charset="utf-8"></script>
+    <script src="/assets/libs/highcharts/code/highcharts.js"></script>
+    <script src="/assets/libs/highcharts/code/highcharts-3d.js"></script>
+    <script src="/assets/js/fg.js"></script>
+    <script src="/assets/js/geo.js"></script>
+    <script src="/assets/js/handlers.js"></script>
+    <script src="/assets/js/main.js"></script>
   </body>
 </html>

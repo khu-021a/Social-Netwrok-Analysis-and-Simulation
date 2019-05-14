@@ -29,7 +29,7 @@ def create_app():
     if not os.path.exists(DOWNLOAD_FOLDER):
         os.mkdir(DOWNLOAD_FOLDER)
 
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='assets')
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     client = MongoClient('mongodb://localhost:27017/')
@@ -84,7 +84,7 @@ def create_app():
     def index():
         cookie_val = assign_cookie_value(request, COOKIE_KEY)
         print request.cookies
-        response = make_response(send_from_directory('template', 'index.html'), 200)
+        response = make_response(send_from_directory('assets', 'index.html'), 200)
         return bind_cookie(response, COOKIE_KEY, cookie_val, COOKIE_DURATION)
     
     @app.route('/generator/<string:net_type>', methods=['PUT'])
