@@ -3,64 +3,52 @@ import snap as sp
 
 
 def LTM(net, seeds, threshold):
-    # record available neighbors for diffusion
-    # set for no duplicate nodes
+    if threshold > 1 or threshold < 0:
+        threshold = random.uniform(0, 1)
     nbrs_nodes = set([])
-    # deep copy of seed nodes
+
     seeds_clone = [n for n in seeds]
     
-    results = [] # record node change sequence
+    results = []
     results.append(seeds)
     
-    # initial available neighbors based on seed nodes
     for node in seeds_clone:
         seed_nbrs = set([v for v in net.GetNI(node).GetOutEdges() if v not in seeds_clone])
         nbrs_nodes = nbrs_nodes | seed_nbrs
     
-    # when no available neighbors can be diffused 
-    # simulation stops
     while len(nbrs_nodes) > 0:
-        v = nbrs_nodes.pop() # choose a neighbor as the candidate to diffuse
-        # find available candidate neighbors
+        v = nbrs_nodes.pop()
         in_nbrs = [n for n in net.GetNI(v).GetInEdges()]
         in_active_nbrs = [n for n in net.GetNI(v).GetInEdges() if n in seeds_clone]
-        buv = 1.0 * len(in_active_nbrs) / len(in_nbrs) # compute current probability
-        if buv >= threshold: # diffusion success condition
-            # add newly diffused node
+        buv = 1.0 * len(in_active_nbrs) / len(in_nbrs)
+        if buv >= threshold:
             seeds_clone.append(v)
             results.append([v])
-            # add new available nodes for diffusion
             new_nbrs = (n for n in net.GetNI(v).GetOutEdges() if n not in seeds_clone)
             nbrs_nodes = nbrs_nodes | set(new_nbrs)
     
     return results
 
 def ICM(net, seeds, transfer_sources, pb_source, pb_normal):
-    hist_seeds = set(seeds) # record currently existing diffused nodes
+    hist_seeds = set(seeds)
     
-    results = [] # record node change sequence
+    results = []
     results.append(seeds)
 
-    # if seeds are used up, simulation stops
     while len(seeds) > 0:
-        # find all available neighbors for diffusion and assign random probabilities
         seed_nbrs = set([v for node in seeds for v in net.GetNI(node).GetOutEdges() if v not in hist_seeds])
         pbnbrs = {n: random.uniform(0,1) for n in seed_nbrs}
+        #new_seeds = set()
         new_seeds = []
-        # get node and probability pair
         for k, v in pbnbrs.items():
-        	# get seed node and its probability
             s = [n for n in net.GetNI(k).GetInEdges() if n in seeds]
             s_pb = [(pb_source if n in transfer_sources else pb_normal) for n in s]
-            # find neighbors with less probabilities to diffuse
             effective_pb = filter(lambda x : x >= v, s_pb)
             if len(effective_pb) > 0 and k not in hist_seeds:
+                #new_seeds.add(k)
                 new_seeds.append(k)
                 results.append([k])
-        # record new seed nodes
         hist_seeds = hist_seeds | set(new_seeds)
-        # encountered nodes will never be added to the current seed node collection
-        # whether they are diffused or not as the model logics
         seeds = new_seeds
     
     return results
