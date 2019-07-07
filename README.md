@@ -43,7 +43,7 @@ For Linux or Mac OS:
 export FLASK_APP=simulator/app.py
 ```
 
-For WIndows Command Prompt:
+For Windows Command Prompt:
 
 ```
 set FLASK_APP="simulator/app.py"
