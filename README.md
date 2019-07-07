@@ -60,9 +60,13 @@ set $env:FLASK_APP = "simulator/app.py"
 ```
 flask run
 
-# or
+or
 
 python -m flask run
+
+or
+
+py -2 -m flask run
 ```
 
 ## Screenshots
