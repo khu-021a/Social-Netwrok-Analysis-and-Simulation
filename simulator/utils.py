@@ -1,9 +1,7 @@
-from functools import reduce
-from operator import iconcat
 import numpy as np
 
 def flatten_list_2d(list_2d):
-    return reduce(iconcat, list_2d, [])
+    return reduce(lambda x, y: x + y, list_2d, [])
 
 def node_centrality_equal_intervals(centralities):
     num_nodes = len(centralities)

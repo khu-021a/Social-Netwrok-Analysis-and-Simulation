@@ -17,7 +17,7 @@
 }
 
 .opinion {
-    stroke: #975a58;
+    stroke: #f0c05a;
     stroke-width: 3px;
 }
 
@@ -89,4 +89,88 @@
 
 .ec-color-4 {
     fill: #FFB519;
+}
+
+.community-color-0 {
+    fill: #a9a9a9;
+}
+
+.community-color-1 {
+    fill: #e6194B;
+}
+
+.community-color-2 {
+    fill: #f58231;
+}
+
+.community-color-3 {
+    fill: #ffe119;
+}
+
+.community-color-4 {
+    fill: #bfef45;
+}
+
+.community-color-5 {
+    fill: #3cb44b;
+}
+
+.community-color-6 {
+    fill: #42d4f4;
+}
+
+.community-color-7 {
+    fill: #4363d8;
+}
+
+.community-color-8 {
+    fill: #911eb4;
+}
+
+.community-color-9 {
+    fill: #f032e6;
+}
+
+.community-color-10 {
+    fill: #fabebe;
+}
+
+.community-color-11 {
+    fill: #ffd8b1;
+}
+
+.community-color-12 {
+    fill: #fffac8;
+}
+
+.community-color-13 {
+    fill: #aaffc3;
+}
+
+.community-color-14 {
+    fill: #e6beff;
+}
+
+.community-color-15 {
+    fill: #ffffff;
+}
+
+.community-color-16 {
+    fill: #800000;
+}
+
+.community-color-17 {
+    fill: #9A6324;
+}
+
+.community-color-18 {
+    fill: #808000;
+}
+
+.community-color-19 {
+    fill: #469990;
+}
+
+.community-color-20 {
+    fill: #000075;
 }

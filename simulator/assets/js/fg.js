@@ -1,7 +1,6 @@
 let forceGraph = (options) => {
     let anchor = options['anchor']
     let nodeRadius = options['nodeRadius']
-    let nodeTextKey = options['nodeTextKey']
     let emphasisFillKey = options['emphasisFillKey']
     let emphasisStrokeKey = options['emphasisStrokeKey']
 
@@ -64,7 +63,27 @@ let forceGraph = (options) => {
         .classed('ec-2', d => d['ec'] === 2)
         .classed('ec-3', d => d['ec'] === 3)
         .classed('ec-4', d => d['ec'] === 4)
-        gNodes.append('text').text(datum => datum[nodeTextKey]).attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+        .classed('community-0', d => d['community'] % 20 === -1)
+        .classed('community-1', d => d['community'] % 20 === 0)
+        .classed('community-2', d => d['community'] % 20 === 1)
+        .classed('community-3', d => d['community'] % 20 === 2)
+        .classed('community-4', d => d['community'] % 20 === 3)
+        .classed('community-5', d => d['community'] % 20 === 4)
+        .classed('community-6', d => d['community'] % 20 === 5)
+        .classed('community-7', d => d['community'] % 20 === 6)
+        .classed('community-8', d => d['community'] % 20 === 7)
+        .classed('community-9', d => d['community'] % 20 === 8)
+        .classed('community-10', d => d['community'] % 20 === 9)
+        .classed('community-11', d => d['community'] % 20 === 10)
+        .classed('community-12', d => d['community'] % 20 === 11)
+        .classed('community-13', d => d['community'] % 20 === 12)
+        .classed('community-14', d => d['community'] % 20 === 13)
+        .classed('community-15', d => d['community'] % 20 === 14)
+        .classed('community-16', d => d['community'] % 20 === 15)
+        .classed('community-17', d => d['community'] % 20 === 16)
+        .classed('community-18', d => d['community'] % 20 === 17)
+        .classed('community-19', d => d['community'] % 20 === 18)
+        .classed('community-20', d => d['community'] % 20 === 19)
         gNodes = gNodes.merge(slots).attr('id', datum => datum.id).call(draggable)
         return gNodes
     }

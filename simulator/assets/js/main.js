@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    bsCustomFileInput.init();
+});
+
 $(document).ajaxSend(function() {
     $('#loading-dialog').modal('show');
 });
@@ -48,23 +52,38 @@ $('#cl-dialog').on('shown.bs.modal', function() {
     });
 });
 
-$('#dc-option, #bc-option, #cc-option, #ec-option').on('click', function(event) {
+var analysisType = null;
+$('#dc-option, #bc-option, #cc-option, #ec-option, #community').on('click', function(event) {
     if ($('#centrality-stats').hasClass('hide')) {
         $('#centrality-stats').removeClass('hide');
     }
-    if (centralityType !== null) {
-        $('#ul-graph g.nodes circle.' + centralityType + '-' + 1).removeClass(centralityType + '-color-' + 1);
-        $('#ul-graph g.nodes circle.' + centralityType + '-' + 2).removeClass(centralityType + '-color-' + 2);
-        $('#ul-graph g.nodes circle.' + centralityType + '-' + 3).removeClass(centralityType + '-color-' + 3);
-        $('#ul-graph g.nodes circle.' + centralityType + '-' + 4).removeClass(centralityType + '-color-' + 4);
-        $('#' + centralityType + '-stats').addClass('hide');
+    if (analysisType !== null) {
+        $('#ul-graph g.nodes circle').toArray().forEach(function(el) {
+            var classList = el.getAttribute('class').split(' ');
+            var newClassList = classList.filter(function(s) {
+                return s.indexOf('-color-') < 0;
+            });
+            el.setAttribute('class', newClassList.join(' '));
+        });
+        if (analysisType !== 'community') {
+            $('#' + analysisType + '-stats').addClass('hide');
+        }
     }
-    centralityType = $(event.target).data('type');
-    $('#' + centralityType + '-stats').removeClass('hide');
-    $('#ul-graph g.nodes circle.' + centralityType + '-' + 1).addClass(centralityType + '-color-' + 1);
-    $('#ul-graph g.nodes circle.' + centralityType + '-' + 2).addClass(centralityType + '-color-' + 2);
-    $('#ul-graph g.nodes circle.' + centralityType + '-' + 3).addClass(centralityType + '-color-' + 3);
-    $('#ul-graph g.nodes circle.' + centralityType + '-' + 4).addClass(centralityType + '-color-' + 4);
+    analysisType = $(event.target).data('type');
+    if (analysisType !== 'community') {
+        $('#' + analysisType + '-stats').removeClass('hide');
+    }
+    $('#ul-graph g.nodes circle').toArray().forEach(function(el) {
+        //console.log(analysisType);
+        var classList = el.getAttribute('class').split(' ');
+        var targetClass = classList.filter(function(s) {
+            return s.startsWith(analysisType + '-');
+        })[0];
+        //console.log(targetClass);
+        var colorClass = targetClass.split('-').join('-color-');
+        classList.push(colorClass);
+        el.setAttribute('class', classList.join(' '));
+    });
 });
 
 $('[name="model"]').on('click', function(event) {
@@ -120,6 +139,13 @@ $('.ulr-icm-arg').on('click', function(event) {
         $('#ulr-config').prop('disabled', true);
     } else {
         $('.ulr-icm-arg:not(:checked)').prop('disabled', true);
+        $('#ulr-config').prop('disabled', false);
+    }
+});
+
+$('.ulr-model').on('change', function(event) {
+    var curentID = event.target.id;
+    if (curentID === 'ulr-icm' && $('.ulr-icm-arg:checked').length === 2 && $('#ulr-config').prop('disabled')) {
         $('#ulr-config').prop('disabled', false);
     }
 });
@@ -264,8 +290,6 @@ $('#small-world').on('click', swHandler);
 $('#pref-attach').on('click', paHandler);
 
 $('#random').on('click', rndHandler);
-
-$('#community').on('click', commHandler);
 
 $('#get-seeds').on('click', seedHandler);
 

@@ -42,18 +42,6 @@ var generateRows = function(n, initVal) {
     }
 };
 
-var lockResultBtn = function() {
-    if (!$('#results-cl').prop('disabled')) {
-        $('#results-cl').prop('disabled', true);
-    }
-};
-
-var unlockResultBtn = function() {
-    if ($('#results-cl').prop('disabled')) {
-        $('#results-cl').prop('disabled', false);
-    }
-};
-
 var drawCentralityChart = function(cType) {
     var anchor = cType + '-stats';
     var dataset = netData[cType];
@@ -98,18 +86,23 @@ var drawGraphUl = function() {
     forceGraph({
         anchor: '#ul-graph',
         nodeRadius: 5,
-        nodeTextKey: 'community',
         emphasisFillKey: 'seed',
         emphasisStrokeKey: 'leader'
     })(net['nodes'], net['edges']);
-    if ($('#export-option').hasClass('disabled')) {
-        $('#export-option').removeClass('disabled');
+    if ($('#export-network').hasClass('disabled')) {
+        $('#export-network').removeClass('disabled');
+    }
+    if ($('#export-analysis').hasClass('disabled')) {
+        $('#export-analysis').removeClass('disabled');
     }
 };
 
 var setStatusGen = function() {
-    if ($('#export-option').hasClass('disabled')) {
-        $('#export-option').removeClass('disabled');
+    if ($('#export-network').hasClass('disabled')) {
+        $('#export-network').removeClass('disabled');
+    }
+    if ($('#export-analysis').hasClass('disabled')) {
+        $('#export-analysis').removeClass('disabled');
     }
     if (!$('#centrality-stats').hasClass('hide')) {
         $('#centrality-stats').addClass('hide');
@@ -199,27 +192,10 @@ var rndHandler = function(event) {
     }
 };
 
-var commHandler = function(event) {
-    $.ajax({
-        url: '/communities',
-        type:'GET'
-    }).done(function(data, status, xhr) {
-        var net = JSON.parse(data);
-        $('#ul-graph').empty();
-        forceGraph({
-            anchor: '#ul-graph',
-            nodeRadius: 5,
-            nodeTextKey: 'community',
-            emphasisFillKey: 'seed',
-            emphasisStrokeKey: 'leader'
-        })(net['nodes'], net['edges']);
-    }).fail(function(xhr, status, error) {
-        console.error(status);
-        console.error(error);
-    });
-};
-
 var seedHandler = function(event) {
+    if (!$('#export-ul').hasClass('disabled')) {
+        $('#export-ul').addClass('disabled');
+    }
     var seeds = parseInt($('#seed-num').val());
     var indicator = $('#seed-indicator').val();
 
@@ -237,7 +213,6 @@ var seedHandler = function(event) {
         forceGraph({
             anchor: '#ul-graph',
             nodeRadius: 5,
-            nodeTextKey: 'community',
             emphasisFillKey: 'seed',
             emphasisStrokeKey: 'leader'
         })(net['nodes'], net['edges']);
@@ -248,6 +223,9 @@ var seedHandler = function(event) {
 };
 
 var opldHandler = function(event) {
+    if (!$('#export-ul').hasClass('disabled')) {
+        $('#export-ul').addClass('disabled');
+    }
     var scale = $('[name="scale"]:checked').val()
     var ratio = parseFloat($('#proportion').val());
 
@@ -265,7 +243,6 @@ var opldHandler = function(event) {
         forceGraph({
             anchor: '#ul-graph',
             nodeRadius: 5,
-            nodeTextKey: 'community',
             emphasisFillKey: 'seed',
             emphasisStrokeKey: 'leader'
         })(net['nodes'], net['edges']);
@@ -285,14 +262,15 @@ var ulHandler = function(event) {
     var model = $('[name="model"]:checked').val();
 
     var obj = {
-        'seeds': seeds,
-        'indicator': indicator,
-        'model': model
+        type: 'ul',
+        seeds: seeds,
+        indicator: indicator,
+        model: model
     };
 
-    if (model == "LTM") {
+    if (model === 'ltm') {
         obj['threshold'] = parseFloat($('#ltm-threshold').val()) || 0.4;
-    } else if (model == "ICM") {
+    } else if (model === 'icm') {
         obj ['pb-leaders'] = parseFloat($('#pb-opinion-leaders').val()) || 0.2;
         obj ['pb-normal'] = parseFloat($('#pb-normal-people').val()) || 0.3;
         obj ['scale'] = $('[name="scale"]:checked').val();
@@ -305,12 +283,14 @@ var ulHandler = function(event) {
         cache: false,
         data: obj,
     }).done(function(data, status, xhr) {
+        if ($('#export-ul').hasClass('disabled')) {
+            $('#export-ul').removeClass('disabled');
+        }
         var net = JSON.parse(data);
         $('#ul-graph').empty();
         forceGraph({
             anchor: '#ul-graph',
             nodeRadius: 5,
-            nodeTextKey: 'community',
             emphasisFillKey: 'seed',
             emphasisStrokeKey: 'leader'
         })(net['nodes'], net['edges']);
@@ -324,7 +304,7 @@ var ulHandler = function(event) {
                     var objEl = $('g.nodes g#' + objID + ' circle');
                     objEl.removeClass('node-normal');
                     objEl.addClass('node-seed');
-                }, obj['diffused'] * 1500);
+                }, obj['diffused'] * 1000);
             })(node);
         });
     }).fail(function(xhr, status, error) {
@@ -334,7 +314,9 @@ var ulHandler = function(event) {
 };
 
 var basemapHandler = function (event) {
-    lockResultBtn();
+    if (!$('#results-cl').prop('disabled')) {
+        $('#results-cl').prop('disabled', true);
+    }
     var data = new FormData();
     $.each(fileSet['map-layers'], function(k, v) {
         data.append(k, v);
@@ -368,7 +350,9 @@ var basemapHandler = function (event) {
 };
 
 var netFileHandler = function(event) {
-    lockResultBtn();
+    if (!$('#results-cl').prop('disabled')) {
+        $('#results-cl').prop('disabled', true);
+    }
     var data = new FormData();
     $.each(fileSet['network'], function(k, v) {
         data.append(k, v);
@@ -406,7 +390,9 @@ var netFileHandler = function(event) {
 };
 
 var weightFileHandler = function(event) {
-    lockResultBtn();
+    if (!$('#results-cl').prop('disabled')) {
+        $('#results-cl').prop('disabled', true);
+    }
     var data = new FormData();
     $.each(fileSet['weights'], function(k, v) {
         data.append(k, v);
@@ -463,10 +449,13 @@ var clHandler = function(event) {
         type:'GET',
         cache: false,
         data: {
-            'data': JSON.stringify(data)
+            type: 'cl',
+            data: JSON.stringify(data)
         }
     }).done(function(data, status, xhr) {
-        unlockResultBtn();
+        if ($('#results-cl').prop('disabled')) {
+            $('#results-cl').prop('disabled', false);
+        }
         var obj = JSON.parse(data);
         var diffusion = obj['diffusion'];
 
@@ -522,7 +511,7 @@ var clHandler = function(event) {
                     var objEl = $('svg.geo-svg g.point #point' + objID);
                     objEl.removeClass('point-cl-normal');
                     objEl.addClass('point-cl-diffused');
-                }, obj['properties']['diffused'] * 1500);
+                }, obj['properties']['diffused'] * 1000);
             })(node);
         });
     }).fail(function(xhr, status, error) {
@@ -540,6 +529,8 @@ var ulrLTMHandler = function(event) {
     var maxThres = parseFloat($('#ulr-ltm-threshold-max').val());
     var thresRangeNum = parseInt($('#ulr-ltm-threshold-range-num').val());
     var ltmData = {
+        type: 'ulr', 
+        model:'icm',
         minSeeds: minSeeds,
         maxSeeds: maxSeeds,
         seedRangeNum: seedRangeNum,
@@ -555,7 +546,11 @@ var ulrLTMHandler = function(event) {
         cache: false,
         data: ltmData,
     }).done(function(data, status, xhr) {
+        if ($('#export-ulr-ltm').hasClass('disabled')) {
+            $('#export-ulr-ltm').removeClass('disabled');
+        }
         var ulrResults = JSON.parse(data);
+        console.log(ulrResults);
         var ulrInfo = ulrResults['info'];
         var ulrData = ulrResults['data']
         $('#ulr-graph').empty();
@@ -705,9 +700,13 @@ var ulrICMHandler = function(event) {
         url: '/diffusion-ulr/icm',
         type:'GET',
         cache: false,
-        data: {data: JSON.stringify(icmData)},
+        data: {type: 'ulr', model:'icm', data: JSON.stringify(icmData)},
     }).done(function(data, status, xhr) {
+        if ($('#export-ulr-icm').hasClass('disabled')) {
+            $('#export-ulr-icm').removeClass('disabled');
+        }
         var ulrResults = JSON.parse(data);
+        console.log(ulrResults);
         var ulrInfo = ulrResults['info'];
         var ulrData = ulrResults['data']
         $('#ulr-graph').empty();

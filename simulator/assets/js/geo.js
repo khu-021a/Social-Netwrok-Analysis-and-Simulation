@@ -56,7 +56,7 @@ let createLayers = (anchor, layers, options) => {
                 break
         }
         let map = entire.append('g').classed(className, true).selectAll('path').data(features)
-        if (featureType === 'Point') {
+        if (featureType === 'Point'|| featureType === 'MultiPoint') {
             map.enter().append('path').attr('id', d => (className + d.id)).classed('point-cl-normal', d => !d['properties']['seed']).classed('point-cl-diffused', d => d['properties']['seed']).attr('d', path)
         } else {
             map.enter().append('path').attr('id', d => (className + d.id)).attr('d', path)

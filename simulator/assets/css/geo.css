@@ -1,9 +1,9 @@
-.polygon path {
+.polygon path, .multi-polygon path {
     fill: lightblue;
     stroke: black;
 }
 
-.line path {
+.line path, .multi-line path {
     fill: transparent;
     stroke: green;
 }
