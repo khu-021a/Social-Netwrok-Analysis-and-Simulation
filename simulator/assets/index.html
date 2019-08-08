@@ -10,10 +10,16 @@
         <link rel="stylesheet" href="/assets/libs/bootstrap/css/bootstrap.min.css">
         <style>
             h1 {
-                width: 600px;
+                width: 37.5rem;
                 text-align: center;
                 color: white;
             }
+
+            /*p {
+                width: 35rem;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }*/
             
             .cover {
                 width: 100vw;
@@ -27,12 +33,55 @@
                 align-items: center;
             }
 
+            .cover-btn {
+                width: 8rem;
+                margin: 2.5rem;
+            }
+
         </style>
     </head>
     <body>
         <div class="cover">
             <h1>Spaital Diffusion Process of Memes on Social Media Network</h1>
-            <a class="btn btn-primary btn-lg" role="button" href="/app">Enter</a>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <a class="btn btn-primary btn-lg cover-btn" role="button" href="/app">Enter</a>
+                    <a class="btn btn-primary btn-lg cover-btn" role="button" href="/doc" data-toggle="tooltip" data-placement="bottom" title="Updated on 07/15/2019.">Manual</a>
+                    <button type="button" class="btn btn-primary btn-lg cover-btn" data-toggle="modal" data-target="#about-modal">About</button>
+                </div>
+            </div>
         </div>
+        <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="about-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered w-50 h-50 mw-100 mh-100 modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="about-label">About the Project</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <p class="lead">This research was supported by the US National Science Foundation (NSF) through the award NSF #1416509 "IBSS: Spatiotemporal Modeling of Human Dynamics Across Social Media and Social Networks." This project was collaborative research among San Diego State University, Kent State University, and the University of Arkansas.</p>
+                                <p class="lead">Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation.</p>
+                            </div>
+                            <div class="row">
+                                <p class="lead small text-muted font-italic">Contacts: Jay Lee (<a href="mailto:jlee@kent.edu">jlee@kent.edu</a>). Department of Geography, Kent State University, Kent, OH 44242-0001.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="/assets/libs/jquery-3.3.1.min.js"></script>
+        <script src="/assets/libs/popper.min.js"></script>
+        <script src="/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     </body>
 </html>

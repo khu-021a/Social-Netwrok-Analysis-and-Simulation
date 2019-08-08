@@ -121,10 +121,10 @@ def create_app():
     
     @app.route('/doc')
     def document():
-        cookie_val = assign_cookie_value(request, COOKIE_KEY)
+        user_id = assign_cookie_value(request, COOKIE_KEY)
         print request.cookies
-        response = make_response(send_from_directory('assets', 'doc.html'), 200)
-        return bind_cookie(response, COOKIE_KEY, cookie_val, COOKIE_DURATION)
+        response = make_response(send_file('./manual.pdf', mimetype='application/pdf', as_attachment=True, attachment_filename='manual.pdf'), 200)
+        return bind_cookie(response, COOKIE_KEY, user_id, COOKIE_DURATION, no_cache=True)
     
     @app.route('/generator/<string:net_type>', methods=['PUT'])
     def generate_network(net_type):
